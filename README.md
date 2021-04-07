@@ -16,7 +16,7 @@ Es importante destacar, que este proceso, no debe esperar a ser en clase; es imp
 
 Las consultas que sean realizadas por correo deben seguir el siguiente formato:
 
-Subject: [NT1-<CURSO LETRA>-GRP-<GRUPO NUMERO>] <Proyecto XXX> | Informativo o Consulta
+Subject: [NT1-<CURSO LETRA>-GRP-<GRUPO NUMERO>] <Proyecto XXX> | Informativo o Consult
 
 Body: 
 
