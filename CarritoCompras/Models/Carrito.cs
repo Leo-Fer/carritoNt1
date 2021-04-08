@@ -11,6 +11,5 @@ public class Carrito
 
 	public Carrito()
 	{
-		CarritosItem = new list<CarritoItem>();
 	}
 }
