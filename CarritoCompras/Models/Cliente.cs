@@ -4,11 +4,11 @@
 
 public class Cliente : Usuario
 {
-    public String dni { get; set; }
+    public String Dni { get; set; }
 
-    public List<Carrito> carritos { get; set; }
+    public List<Carrito> Carritos { get; set; }
 
-    public List<Compra> compras { get; set; }
+    public List<Compra> Compras { get; set; }
 
 
 

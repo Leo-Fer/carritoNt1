@@ -5,21 +5,21 @@
 public  class Usuario
 {
 
-    public String nombre { get; set; }
+    public String Nombre { get; set; }
 
-    public String direccion { get; set; }
+    public String Direccion { get; set; }
 
-    public String telefono { get; set; }
+    public String Telefono { get; set; }
 
-    public String email { get; set; }
+    public String Email { get; set; }
 
-    public String apellido { get; set; }
+    public String Apellido { get; set; }
 
-    public DateTime fechaAlta { get; set; }
+    public DateTime FechaAlta { get; set; }
 
-    public String password { get; set; }
+    public String Password { get; set; }
 
-    public String userRol { get; set; }
+    public String UserRol { get; set; }
 
 
     public Usuario()
