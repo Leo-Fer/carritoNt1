@@ -4,22 +4,15 @@
 
 public  class Usuario
 {
-
-    public String Nombre { get; set; }
-
-    public String Direccion { get; set; }
-
-    public String Telefono { get; set; }
-
-    public String Email { get; set; }
-
-    public String Apellido { get; set; }
-
+    public int Id { get; set }
+    public string Nombre { get; set; }
+    public string Direccion { get; set; }
+    public string Telefono { get; set; }
+    public string Email { get; set; }
+    public string Apellido { get; set; }
     public DateTime FechaAlta { get; set; }
-
-    public String Password { get; set; }
-
-    public String UserRol { get; set; }
+    public string Password { get; set; }
+    public string UserRol { get; set; }
 
 
     public Usuario()
