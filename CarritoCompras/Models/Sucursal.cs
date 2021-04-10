@@ -1,8 +1,6 @@
 ﻿using System;
 
-/// <summary>
-/// Summary description for Class1
-/// </summary>
+
 public class Sucursal
 {
 	public int Id { get; set }
