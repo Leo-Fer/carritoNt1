@@ -1,6 +1,6 @@
 ﻿using System;
 
-<<<<<<< HEAD
+
 namespace CarritoCompras.Models {
     public class Producto
     {
