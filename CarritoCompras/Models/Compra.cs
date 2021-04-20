@@ -9,6 +9,9 @@ public class Compra
 	public Cliente Cliente { get; set; }
 	public Carrito Carrito { get; set; }
 	public double Total { get; set; }
+
+	public int ClienteId { get; set; }
+	public int CarritoId { get; set; }
 	public Compra(){}
 	}
 }
