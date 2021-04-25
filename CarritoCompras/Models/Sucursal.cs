@@ -12,6 +12,8 @@ namespace CarritoCompras.Models {
 
 		public List<StockItem> Stockitems { get; set; } = new List<StockItem>();
 
+		public int CompraId { get; set; }
+
 		public Sucursal()
 		{
 		}

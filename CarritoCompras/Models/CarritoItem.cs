@@ -11,7 +11,8 @@ namespace CarritoCompras.Models
 		public double ValorUnitario { get; set; }
 		public int Cantidad { get; set; }
 		public double Subtotal { get; set; }
-
+		public int CarritoId { get; set; }
+		public int ProductoId { get; set; }
 		public CarritoItem()
 		{
 		}

@@ -9,8 +9,12 @@ namespace CarritoCompras.Models
         public List<Carrito> Carritos { get; set; } = new List<Carrito>();
         public List<Compra> Compras { get; set; } = new List<Compra>();
 
+        public int CarritoId { get; set; }
+        public int CompraId { get; set; }
+
         public Cliente()
         {
+
         }
     }
 }

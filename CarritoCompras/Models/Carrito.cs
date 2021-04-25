@@ -9,9 +9,10 @@ namespace CarritoCompras.Models
 		public bool Activo { get; set; }
 		public Cliente Cliente { get; set; }
 
-		public List<CarritoItem> CarritoItems = new List<CarritoItem>();
+		public List<CarritoItem> CarritoItems;
 		public double Subtotal { get; set; }
-
+		public int ClienteId { get; set; }
+		public int CarritoItemId { get; set; }
 		public Carrito()
 		{
 		}
