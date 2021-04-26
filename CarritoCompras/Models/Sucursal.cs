@@ -10,7 +10,7 @@ namespace CarritoCompras.Models {
 		public string Telefono { get; set; }
 		public string Email { get; set; }
 
-		public List<StockItem> Stockitems { get; set; } = new List<StockItem>();
+        public List<StockItem> Stockitems;
 
 		public int CompraId { get; set; }
 
