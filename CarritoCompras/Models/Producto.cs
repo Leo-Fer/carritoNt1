@@ -14,7 +14,6 @@ namespace CarritoCompras.Models {
         public bool Activo { get; set; }
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
         public Categoria Categoria { get; set; }
-        
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
         public int CategoriaId { get; set; }
 
