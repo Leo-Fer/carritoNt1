@@ -1,11 +1,14 @@
-﻿using System;
+﻿using CarritoCompras.Data;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarritoCompras.Models
 {
 	public class Carrito
 	{
 		public int Id { get; set; }
+		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		public bool Activo { get; set; }
 		public Cliente Cliente { get; set; }
 

@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations;
 namespace CarritoCompras.Models {
 	public class Sucursal
 	{
-		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		public int Id { get; set; }
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		public string Nombre { get; set; }
@@ -14,9 +13,10 @@ namespace CarritoCompras.Models {
 		public string Direccion { get; set; }
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		public string Telefono { get; set; }
+
+		public List<StockItem> Stockitems;
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		[DataType(DataType.EmailAddress)]
-		public List<StockItem> Stockitems;
 		public string Email { get; set; }
 
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
