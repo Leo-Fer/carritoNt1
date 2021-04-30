@@ -1,17 +1,26 @@
-﻿using System;
+﻿using CarritoCompras.Data;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-
-
-public class Cliente : Usuario
+namespace CarritoCompras.Models
 {
-    public int Id { get; set }
-    public string Dni { get; set; }
-    public List<Carrito> Carritos { get; set; }
-    public List<Compra> Compras { get; set; }
+    public class Cliente : Usuario
+    {
+        [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
+        [Range(1000000,99999999, ErrorMessage = ErrorMsgs.ErrorDeRange)]
+        public string Dni { get; set; }
 
+        public List<Carrito> Carritos;
 
+        public List<Compra> Compras;
 
-    public Cliente()
-	{
-	}
+        public int CarritoId { get; set; }
+        public int CompraId { get; set; }
+
+        public Cliente()
+        {
+
+        }
+    }
 }

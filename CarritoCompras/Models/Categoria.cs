@@ -1,12 +1,26 @@
-﻿using System;
+﻿using CarritoCompras.Data;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-public class Categoria
+namespace CarritoCompras.Models
 {
-    public int Id { get; set }
-    public string Nombre{ get; set; }
-    public string Descripcion { get; set; }
 
-    public Categoria()
-	{
-	}
+    public class Categoria
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
+        [StringLength(30, MinimumLength = 2, ErrorMessage = ErrorMsgs.ErrorDeLenght)]
+        public string Nombre { get; set; }
+        [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
+        [StringLength(140, MinimumLength = 10, ErrorMessage = ErrorMsgs.ErrorDeLenght)]
+        public string Descripcion { get; set; }
+
+        public List<Producto> Productos;
+
+        public Categoria()
+        {
+        }
+    }
 }
+

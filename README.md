@@ -117,7 +117,7 @@ De la misma manera Uds. deben definir los tipos de datos asociados a cada una de
 ```
 
 **Categoria**
-``
+```
 - Nombre
 - Descripcion
 - Productos
