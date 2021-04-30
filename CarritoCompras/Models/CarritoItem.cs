@@ -11,8 +11,11 @@ namespace CarritoCompras.Models
 		public Carrito Carrito { get; set; }
 		public Producto Producto { get; set; }
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
+		[Range(0, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorDeRange)]
 		public double ValorUnitario { get; set; }
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
+		[Range(0, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorDeRange)]
+		// maxValue reemplazar con cantidad del stock para el item
 		public int Cantidad { get; set; }
 		public double Subtotal { get; set; }
 		public int CarritoId { get; set; }

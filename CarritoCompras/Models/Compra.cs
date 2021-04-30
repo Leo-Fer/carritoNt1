@@ -9,8 +9,7 @@ public class Compra
 	public int Id { get; set; }
 	public Cliente Cliente { get; set; }
 	public Carrito Carrito { get; set; }
-
-	[Required(ErrorMessage= ErrorMsgs.ErrorRequerido)]
+	//[DataType(DataType.Currency)]		????
 	public double Total { get; set; }
 
 	public int ClienteId { get; set; }

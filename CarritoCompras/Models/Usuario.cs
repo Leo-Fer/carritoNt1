@@ -13,6 +13,7 @@ namespace CarritoCompras.Models {
         [StringLength(15, MinimumLength = 2, ErrorMessage = ErrorMsgs.ErrorDeLenght)]
         public string Apellido { get; set; }
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
+        [StringLength(70, MinimumLength = 5, ErrorMessage = ErrorMsgs.ErrorDeLenght)]
         public string Direccion { get; set; }
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
         // ver como seria el formato para telefonos con codigos raros
