@@ -19,7 +19,6 @@ namespace CarritoCompras.Models {
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
 
-		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		public int CompraId { get; set; }
 
 		public Sucursal()

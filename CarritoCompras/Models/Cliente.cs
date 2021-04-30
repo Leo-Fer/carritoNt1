@@ -8,7 +8,7 @@ namespace CarritoCompras.Models
     public class Cliente : Usuario
     {
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
-        [StringLength(8, MinimumLength = 5, ErrorMessage = ErrorMsgs.ErrorDeLenght)]
+        [Range(1000000,99999999, ErrorMessage = ErrorMsgs.ErrorDeRange)]
         public string Dni { get; set; }
 
         public List<Carrito> Carritos;
