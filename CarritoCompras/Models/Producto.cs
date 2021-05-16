@@ -16,7 +16,7 @@ namespace CarritoCompras.Models {
         [DataType(DataType.Currency)]
         [Range(0.01, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
         public double PrecioVigente { get; set; }
-        //[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]   CONSULTAR CON MARIANO  
+        
         public bool Activo { get; set; }
         public Categoria Categoria { get; set; }
 
