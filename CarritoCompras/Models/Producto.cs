@@ -22,8 +22,5 @@ namespace CarritoCompras.Models {
 
         public int CategoriaId { get; set; }
 
-        public Producto()
-        {
-        }
     }
 }

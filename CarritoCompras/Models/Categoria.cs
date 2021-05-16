@@ -18,9 +18,6 @@ namespace CarritoCompras.Models
 
         public List<Producto> Productos;
 
-        public Categoria()
-        {
-        }
     }
 }
 

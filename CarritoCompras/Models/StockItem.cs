@@ -17,7 +17,5 @@ public class StockItem
 		public int SucursalId { get; set; }
 		public int ProductoId { get; set; }
 
-		public StockItem(){
-		}
 	}
 }

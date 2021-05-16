@@ -15,12 +15,7 @@ namespace CarritoCompras.Models
 
         public List<Compra> Compras;
 
-        public int CarritoId { get; set; }
-        public int CompraId { get; set; }
 
-        public Cliente()
-        {
-
-        }
+      
     }
 }

@@ -31,19 +31,7 @@ namespace CarritoCompras.Models {
         public string Password { get; set; }
         public string UserRol { get; set; }
 
-
-        public Usuario()
-        {
-
-        }
     }
-
-
-
-
-
-
-
 
     
 }

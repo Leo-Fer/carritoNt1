@@ -14,6 +14,5 @@ public class Compra
 
 	public int ClienteId { get; set; }
 	public int CarritoId { get; set; }
-	public Compra(){}
-	}
+	
 }

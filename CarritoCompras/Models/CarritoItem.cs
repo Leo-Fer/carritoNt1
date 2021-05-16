@@ -20,8 +20,6 @@ namespace CarritoCompras.Models
 		public double Subtotal { get; set; }
 		public int CarritoId { get; set; }
 		public int ProductoId { get; set; }
-		public CarritoItem()
-		{
-		}
+		
 	}
 }
