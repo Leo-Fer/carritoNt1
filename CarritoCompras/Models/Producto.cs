@@ -1,5 +1,6 @@
 ﻿using CarritoCompras.Data;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CarritoCompras.Models {
@@ -21,6 +22,8 @@ namespace CarritoCompras.Models {
         public Categoria Categoria { get; set; }
 
         public int CategoriaId { get; set; }
+        
+        public List<StockItem> Stockitems { get; set; }
 
     }
 }

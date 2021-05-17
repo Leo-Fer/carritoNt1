@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarritoCompras.Migrations
 {
     [DbContext(typeof(MiContexto))]
-    [Migration("20210516210250_InicialEntidades")]
+    [Migration("20210517232049_InicialEntidades")]
     partial class InicialEntidades
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,25 +153,18 @@ namespace CarritoCompras.Migrations
 
             modelBuilder.Entity("CarritoCompras.Models.StockItem", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Cantidad")
+                    b.Property<int>("SucursalId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SucursalId")
+                    b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("SucursalId", "ProductoId");
 
                     b.HasIndex("ProductoId");
-
-                    b.HasIndex("SucursalId");
 
                     b.ToTable("StockItems");
                 });
@@ -320,13 +313,13 @@ namespace CarritoCompras.Migrations
             modelBuilder.Entity("CarritoCompras.Models.StockItem", b =>
                 {
                     b.HasOne("CarritoCompras.Models.Producto", "Producto")
-                        .WithMany()
+                        .WithMany("Stockitems")
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarritoCompras.Models.Sucursal", "Sucursal")
-                        .WithMany()
+                        .WithMany("Stockitems")
                         .HasForeignKey("SucursalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

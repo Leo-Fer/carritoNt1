@@ -17,6 +17,14 @@ namespace CarritoCompras.Data
             
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StockItem>().HasKey(si => new { si.SucursalId, si.ProductoId });
+
+            modelBuilder.Entity<StockItem>().HasOne(si => si.Sucursal).WithMany(s => s.Stockitems).HasForeignKey(si => si.SucursalId);
+            modelBuilder.Entity<StockItem>().HasOne(si => si.Producto).WithMany(p => p.Stockitems).HasForeignKey(si => si.ProductoId);
+
+        }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Producto> Productos{ get; set; }

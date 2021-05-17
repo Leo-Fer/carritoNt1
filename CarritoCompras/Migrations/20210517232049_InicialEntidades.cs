@@ -106,15 +106,13 @@ namespace CarritoCompras.Migrations
                 name: "StockItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Cantidad = table.Column<int>(nullable: false),
                     SucursalId = table.Column<int>(nullable: false),
-                    ProductoId = table.Column<int>(nullable: false)
+                    ProductoId = table.Column<int>(nullable: false),
+                    Cantidad = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StockItems", x => x.Id);
+                    table.PrimaryKey("PK_StockItems", x => new { x.SucursalId, x.ProductoId });
                     table.ForeignKey(
                         name: "FK_StockItems_Productos_ProductoId",
                         column: x => x.ProductoId,
@@ -175,13 +173,13 @@ namespace CarritoCompras.Migrations
                         column: x => x.CarritoId,
                         principalTable: "Carritos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Compras_Usuarios_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -218,11 +216,6 @@ namespace CarritoCompras.Migrations
                 name: "IX_StockItems_ProductoId",
                 table: "StockItems",
                 column: "ProductoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StockItems_SucursalId",
-                table: "StockItems",
-                column: "SucursalId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
