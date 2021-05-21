@@ -25,9 +25,14 @@ namespace CarritoCompras
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-                       
-            services.AddDbContext<MiContexto>(options => options.UseSqlServer(Configuration.GetConnectionString("CarritoCS")));
-                      
+            if (Configuration.GetValue<bool>("UsaMemoria"))
+            {
+                services.AddDbContext<MiContexto>(options => options.UseInMemoryDatabase(databaseName: "MiBasePrueba"));
+            }
+            else
+            {
+                services.AddDbContext<MiContexto>(options => options.UseSqlServer(Configuration.GetConnectionString("CarritoCS")));
+            }        
             
             services.AddControllersWithViews();
         }
