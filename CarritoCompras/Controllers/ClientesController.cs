@@ -57,6 +57,7 @@ namespace CarritoCompras.Controllers
         public async Task<IActionResult> Create([Bind("Dni,Id,Nombre,Apellido,Direccion,Telefono,Email,FechaAlta,Password,UserRol")] Cliente cliente)
         {
             cliente.carrito = new Carrito();
+            cliente.UserRol = "cliente";
 
             if (ModelState.IsValid)
             {
