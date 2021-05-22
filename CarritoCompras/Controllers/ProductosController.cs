@@ -147,7 +147,7 @@ namespace CarritoCompras.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var producto = await _context.Productos.FindAsync(id);
-            _context.Productos.Remove(producto);
+            producto.Activo = false;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
