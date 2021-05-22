@@ -56,6 +56,8 @@ namespace CarritoCompras.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Dni,Id,Nombre,Apellido,Direccion,Telefono,Email,FechaAlta,Password,UserRol")] Cliente cliente)
         {
+            cliente.carrito = new Carrito();
+
             if (ModelState.IsValid)
             {
                 _context.Add(cliente);

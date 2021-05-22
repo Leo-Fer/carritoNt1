@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CarritoCompras.Migrations
 {
-    public partial class InicialEntidades : Migration
+    public partial class inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -99,7 +99,7 @@ namespace CarritoCompras.Migrations
                         column: x => x.ClienteId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -195,7 +195,8 @@ namespace CarritoCompras.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Carritos_ClienteId",
                 table: "Carritos",
-                column: "ClienteId");
+                column: "ClienteId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Compras_CarritoId",
