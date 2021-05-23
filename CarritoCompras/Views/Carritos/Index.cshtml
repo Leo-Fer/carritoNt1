@@ -1,0 +1,55 @@
+﻿@model IEnumerable<CarritoCompras.Models.Carrito>
+
+@{
+    ViewData["Title"] = "Carritos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Carritos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente.Apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente.Dni)
+            </th>
+            <th>
+                Cantidad de productos
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subtotal)
+            </th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Dni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.carrito.CarritoItems.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subtotal)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

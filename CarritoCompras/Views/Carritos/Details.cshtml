@@ -1,0 +1,54 @@
+﻿@model CarritoCompras.Models.Carrito
+
+@{
+    ViewData["Title"] = "Productos seleccionados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Producto
+            </th>
+            <th>
+                Cantidad
+            </th>
+            <th>
+                Valor Unitario
+            </th>
+            <th>
+                Subtotal
+            </th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Cliente.carrito.CarritoItems)
+        {
+            <tr>
+                <td>
+                    @Html.(item.Producto)
+                </td>
+                <td>
+                    @Html.(item.Cantidad)
+                </td>
+                <td>
+                    @Html.(item.ValorUnitario)
+                </td>
+                <td>
+                    @Html.(item.Subtotal)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    
+    <a asp-action="Index">Volver</a>
+</div>

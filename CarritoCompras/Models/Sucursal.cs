@@ -16,15 +16,11 @@ namespace CarritoCompras.Models {
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		public string Telefono { get; set; }
 
-		public List<StockItem> Stockitems;
+		public List<StockItem> Stockitems { get; set; }
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
 
-		public int CompraId { get; set; }
 
-		public Sucursal()
-		{
-		}
 	}
 }

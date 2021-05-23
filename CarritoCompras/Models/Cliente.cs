@@ -9,18 +9,16 @@ namespace CarritoCompras.Models
     {
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
         [Range(1000000,99999999, ErrorMessage = ErrorMsgs.ErrorDeRange)]
+        [Display(Name="DNI")]
         public string Dni { get; set; }
 
         public List<Carrito> Carritos;
 
         public List<Compra> Compras;
 
-        public int CarritoId { get; set; }
-        public int CompraId { get; set; }
+        public Carrito carrito { get; set; }
 
-        public Cliente()
-        {
 
-        }
+
     }
 }
