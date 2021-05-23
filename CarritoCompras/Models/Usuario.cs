@@ -17,11 +17,11 @@ namespace CarritoCompras.Models {
         [Display(Name = "Dirección")]
         public string Direccion { get; set; }
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
+        [Display(Name = "Teléfono")]
         // ver como seria el formato para telefonos con codigos raros
         public string Telefono { get; set; }
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Teléfono")]
         public string Email { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
