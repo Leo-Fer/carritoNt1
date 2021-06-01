@@ -58,8 +58,12 @@ namespace CarritoCompras.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categoria);
-                await _context.SaveChangesAsync();
+                var exists = _context.Categorias.FirstOrDefault(acc => acc.Nombre == categoria.Nombre);
+                if (exists == null)
+                {
+                    _context.Add(categoria);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(categoria);
@@ -97,8 +101,12 @@ namespace CarritoCompras.Controllers
             {
                 try
                 {
-                    _context.Update(categoria);
-                    await _context.SaveChangesAsync();
+                    var exists = _context.Categorias.FirstOrDefault(acc => acc.Nombre == categoria.Nombre);
+                    if (exists == null)
+                    {
+                        _context.Add(categoria);
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
