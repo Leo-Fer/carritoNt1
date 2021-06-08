@@ -60,7 +60,7 @@ namespace CarritoCompras.Controllers
         public async Task<IActionResult> Create([Bind("Id,Activo,ClienteId")] Carrito carrito)
         {
 
-            if (true)
+            if (ModelState.IsValid)
             {
                 _context.Add(carrito);
                 await _context.SaveChangesAsync();
