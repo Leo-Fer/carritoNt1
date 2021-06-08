@@ -61,6 +61,9 @@ namespace CarritoCompras.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ValorUnitario,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
         {
+
+           
+               
             if (ModelState.IsValid)
             {
                 _context.Add(carritoItem);

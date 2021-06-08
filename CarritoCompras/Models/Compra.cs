@@ -13,9 +13,9 @@ namespace CarritoCompras.Models
 		//[DataType(DataType.Currency)]		????
 		public double Total { get; set; }
 
-		public int? ClienteId { get; set; }
+		public int ClienteId { get; set; }
 		
-		public int? CarritoId { get; set; }
+		public int CarritoId { get; set; }
 
 	}
 }

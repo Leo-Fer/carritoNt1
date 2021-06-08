@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<CarritoCompras.Models.Cliente>
 
 @{
-    ViewData["Title"] = "Agregar";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Clientes</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Agregar Cliente</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -34,7 +34,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.FechaAlta)
             </th>
-            <th>Acciones</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserRol)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -62,9 +68,15 @@
                 @Html.DisplayFor(modelItem => item.FechaAlta)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserRol)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

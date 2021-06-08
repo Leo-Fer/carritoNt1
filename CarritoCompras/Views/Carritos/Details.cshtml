@@ -1,54 +1,31 @@
 ﻿@model CarritoCompras.Models.Carrito
 
 @{
-    ViewData["Title"] = "Productos seleccionados";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Details</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Producto
-            </th>
-            <th>
-                Cantidad
-            </th>
-            <th>
-                Valor Unitario
-            </th>
-            <th>
-                Subtotal
-            </th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Cliente.carrito.CarritoItems)
-        {
-            <tr>
-                <td>
-                    @Html.(item.Producto)
-                </td>
-                <td>
-                    @Html.(item.Cantidad)
-                </td>
-                <td>
-                    @Html.(item.ValorUnitario)
-                </td>
-                <td>
-                    @Html.(item.Subtotal)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 <div>
-    
-    <a asp-action="Index">Volver</a>
+    <h4>Carrito</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Activo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Activo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Apellido)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>

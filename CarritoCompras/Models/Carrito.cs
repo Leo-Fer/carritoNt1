@@ -12,7 +12,7 @@ namespace CarritoCompras.Models
 
 		public bool Activo { get; set; }
 
-		public List<CarritoItem> CarritoItems = new List<CarritoItem>();
+		public List<CarritoItem> CarritoItem { get; set; }
 		[NotMapped]
 		[Range(0.01, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
 		public double Subtotal { get; set; }
@@ -20,8 +20,6 @@ namespace CarritoCompras.Models
 		[Required]
 		public int ClienteId { get; set; }
 		public Compra compra { get; set; }
-		[Required]
-		public int CompraId { get; set; }
-		
+
 	}
 }
