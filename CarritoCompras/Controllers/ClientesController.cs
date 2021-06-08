@@ -56,12 +56,15 @@ namespace CarritoCompras.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Dni,Id,Nombre,Apellido,Direccion,Telefono,Email,FechaAlta,Password,UserRol")] Cliente cliente)
         {
-            cliente.carrito = new Carrito();
-            cliente.UserRol = "cliente";
+            Carrito carrito = new Carrito();
+            carrito.Activo = true;
 
             if (ModelState.IsValid)
             {
                 _context.Add(cliente);
+                await _context.SaveChangesAsync();
+                carrito.ClienteId = cliente.Id;
+                _context.Add(carrito);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

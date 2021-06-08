@@ -23,6 +23,7 @@ namespace CarritoCompras.Models {
         
         public Categoria Categoria { get; set; }
         [Display(Name ="Categoria")]
+        [Required]
         public int CategoriaId { get; set; }
         
         public List<StockItem> Stockitems { get; set; }

@@ -13,8 +13,9 @@ public class StockItem
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
 		[Range(0, int.MaxValue, ErrorMessage = ErrorMsgs.ErrorValorNegativo)]
 		public int Cantidad { get; set; }
-	
+		[Required]
 		public int SucursalId { get; set; }
+		[Required]
 		public int ProductoId { get; set; }
 
 	}

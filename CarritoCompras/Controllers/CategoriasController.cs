@@ -63,8 +63,9 @@ namespace CarritoCompras.Controllers
                 {
                     _context.Add(categoria);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("Nombre", "No se puede agregar categorías existentes.");
             }
             return View(categoria);
         }
