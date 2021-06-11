@@ -22,10 +22,10 @@ namespace CarritoCompras.Models
 		[Range(0.01, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
 		public double Subtotal { get; set; }
 
-		[Required]
+		
 		public int CarritoId { get; set; }
 	
-		[Required]
+		
 		public int ProductoId { get; set; }
 		
 	}
