@@ -59,11 +59,8 @@ namespace CarritoCompras.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ValorUnitario,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
+        public async Task<IActionResult> Create([Bind("Id,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
         {
-
-           
-               
             if (ModelState.IsValid)
             {
                 _context.Add(carritoItem);
@@ -98,7 +95,7 @@ namespace CarritoCompras.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ValorUnitario,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
         {
             if (id != carritoItem.Id)
             {
