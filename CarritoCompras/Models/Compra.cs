@@ -10,11 +10,12 @@ namespace CarritoCompras.Models
 		public int Id { get; set; }
 		public Cliente Cliente { get; set; }
 		public Carrito Carrito { get; set; }
-		//[DataType(DataType.Currency)]		????
+		
 		public double Total { get; set; }
 
+		[Required]
 		public int ClienteId { get; set; }
-		
+		[Required]
 		public int CarritoId { get; set; }
 
 	}

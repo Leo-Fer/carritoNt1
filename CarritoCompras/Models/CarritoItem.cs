@@ -11,7 +11,7 @@ namespace CarritoCompras.Models
 		public int Id { get; set; }
 		public Carrito Carrito { get; set; }
 		public Producto Producto { get; set; }
-		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
+		[NotMapped]
 		[Range(0, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorDeRange)]
 		public double ValorUnitario { get; set; }
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
@@ -24,6 +24,7 @@ namespace CarritoCompras.Models
 
 		[Required]
 		public int CarritoId { get; set; }
+	
 		[Required]
 		public int ProductoId { get; set; }
 		
