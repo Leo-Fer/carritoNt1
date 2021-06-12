@@ -14,7 +14,7 @@ namespace CarritoCompras.Models
 
 		public List<CarritoItem> CarritoItems { get; set; }
 		[NotMapped]
-		[Range(0.01, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
+		[Range(0.00, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
 		public double Subtotal { get; set; }
 		public Cliente Cliente { get; set; }
 		[Required]

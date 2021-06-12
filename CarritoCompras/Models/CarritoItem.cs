@@ -19,7 +19,7 @@ namespace CarritoCompras.Models
 		// maxValue reemplazar con cantidad del stock para el item
 		public int Cantidad { get; set; }
 		[NotMapped]
-		[Range(0.01, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
+		[Range(0.00, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
 		public double Subtotal { get; set; }
 
 		
