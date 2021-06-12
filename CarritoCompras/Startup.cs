@@ -1,7 +1,9 @@
 using CarritoCompras.Data;
+using CarritoCompras.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +37,8 @@ namespace CarritoCompras
             }        
             
             services.AddControllersWithViews();
+
+            services.AddIdentity<Usuario, Rol>().AddEntityFrameworkStores<MiContexto>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
