@@ -39,6 +39,14 @@ namespace CarritoCompras
             services.AddControllersWithViews();
 
             services.AddIdentity<Usuario, Rol>().AddEntityFrameworkStores<MiContexto>();
+
+            services.Configure<IdentityOptions>(
+                opciones =>
+                {
+                    opciones.Password.RequireNonAlphanumeric = false;
+                    opciones.Password.RequiredLength = 8;
+                }
+                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +67,7 @@ namespace CarritoCompras
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
