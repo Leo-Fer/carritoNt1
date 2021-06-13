@@ -38,7 +38,8 @@ namespace CarritoCompras.Controllers
             {
                 Usuario usr1 = new Usuario()
                 {
-                    Email = modelo.Email
+                    Email = modelo.Email,
+                    UserName = modelo.Email
                 };
 
                 var resultadoCreateUser = await _userManager.CreateAsync(usr1, modelo.Password);

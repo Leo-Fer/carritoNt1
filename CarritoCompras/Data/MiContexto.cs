@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CarritoCompras.Data
 {
-    public class MiContexto : IdentityDbContext
+    public class MiContexto : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
     {
         public MiContexto(DbContextOptions options) :base(options)
         {
