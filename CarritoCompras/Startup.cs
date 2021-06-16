@@ -47,6 +47,9 @@ namespace CarritoCompras
                     opciones.Password.RequiredLength = 8;
                 }
                 );
+            #region Dbinitilize
+            services.AddScoped<IDbInicializador, DbInicializador>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +67,24 @@ namespace CarritoCompras
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                //DbContext
+                var contexto = serviceScope.ServiceProvider.GetRequiredService<MiContexto>();
+
+                if (Configuration.GetValue<bool>("DbInMem"))
+                {
+                    contexto.Database.EnsureCreated();
+                }
+                else
+                {
+                    contexto.Database.Migrate();
+                }
+
+                //DbInicializador
+                serviceScope.ServiceProvider.GetService<IDbInicializador>().Seed();
+            }
 
             app.UseRouting();
 
