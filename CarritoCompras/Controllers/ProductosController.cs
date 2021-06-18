@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarritoCompras.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductosController : Controller
     {
         private readonly MiContexto _context;
@@ -45,7 +47,7 @@ namespace CarritoCompras.Controllers
             return View(producto);
         }
 
-        // GET: Productos/Create
+        // GET: Productos/
         public IActionResult Create()
         {
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Descripcion");
