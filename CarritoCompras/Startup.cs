@@ -73,7 +73,7 @@ namespace CarritoCompras
                 //DbContext
                 var contexto = serviceScope.ServiceProvider.GetRequiredService<MiContexto>();
 
-                if (Configuration.GetValue<bool>("DbInMem"))
+                if (Configuration.GetValue<bool>("UsaMemoria"))
                 {
                     contexto.Database.EnsureCreated();
                 }

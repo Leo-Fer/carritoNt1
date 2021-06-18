@@ -34,9 +34,12 @@ namespace CarritoCompras.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistroUsuario(Registrar modelo)
         {
+
+
+
             if (ModelState.IsValid)
             {
-                Usuario usr1 = new Usuario()
+                Usuario usr1 = new Cliente()
                 {
                     Email = modelo.Email,
                     UserName = modelo.Email
@@ -46,8 +49,10 @@ namespace CarritoCompras.Controllers
 
                 if (resultadoCreateUser.Succeeded)
                 {
+                    //List<string> RolesParaCliente = new List<string>() { "Cliente", "Usuario" };
+                    await _userManager.AddToRoleAsync(usr1, "Cliente");
                     await _signInManager.SignInAsync(usr1, true);
-                    return RedirectToAction("Index", "Home");
+                    return base.RedirectToAction("Create", "Clientes", new { id = usr1.Id });
                 }
 
                 foreach(var error in resultadoCreateUser.Errors)
@@ -57,7 +62,7 @@ namespace CarritoCompras.Controllers
 
             }
 
-            return View();
+            return View(modelo);
         }
 
         public async Task<IActionResult> EmailDisponible(string email)
@@ -97,7 +102,7 @@ namespace CarritoCompras.Controllers
                     {
                         return Redirect(returnl);
                     }
-
+                   
                     return RedirectToAction("Index", "Productos");
                 }
 
