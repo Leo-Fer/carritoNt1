@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarritoCompras.Controllers
 {
     public class UsuariosController : Controller
     {
         private readonly MiContexto _context;
+        private readonly UserManager<Usuario> _userManager;
 
-        public UsuariosController(MiContexto context)
+        public UsuariosController(MiContexto context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Usuarios
@@ -44,8 +47,14 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Usuarios/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
+            Usuario empleado;
+            if (id != null)
+            {
+                empleado = await _context.Usuarios.FindAsync(id);
+                return View("Create", empleado);
+            }
             return View();
         }
 
@@ -54,15 +63,25 @@ namespace CarritoCompras.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,Direccion,Telefono,Email,FechaAlta,Password,UserRol")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,Direccion,Telefono,Email,Password")] Usuario empleado)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Usuario usr1 = _context.Usuarios.Find(empleado.Id);
+
+                usr1.Nombre = empleado.Nombre;
+                usr1.Apellido = empleado.Apellido;
+                usr1.Direccion = empleado.Direccion;
+                usr1.Email = empleado.Email;
+                usr1.UserName = empleado.UserName;
+                usr1.PasswordHash = empleado.PasswordHash;
+                usr1.FechaAlta = DateTime.Now;
+
+                IdentityResult resultado = await _userManager.UpdateAsync(usr1);
+                return RedirectToAction(nameof(Index));                
+               
             }
-            return View(usuario);
+            return View(empleado);
         }
 
         // GET: Usuarios/Edit/5

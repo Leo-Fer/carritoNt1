@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CarritoCompras.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class ProductosController : Controller
     {
         private readonly MiContexto _context;
