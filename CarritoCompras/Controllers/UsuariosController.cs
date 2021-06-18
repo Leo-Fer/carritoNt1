@@ -72,9 +72,7 @@ namespace CarritoCompras.Controllers
                 usr1.Nombre = empleado.Nombre;
                 usr1.Apellido = empleado.Apellido;
                 usr1.Direccion = empleado.Direccion;
-                usr1.Email = empleado.Email;
-                usr1.UserName = empleado.UserName;
-                usr1.PasswordHash = empleado.PasswordHash;
+                usr1.Telefono = empleado.Telefono;
                 usr1.FechaAlta = DateTime.Now;
 
                 IdentityResult resultado = await _userManager.UpdateAsync(usr1);

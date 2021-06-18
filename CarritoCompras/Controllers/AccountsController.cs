@@ -34,25 +34,25 @@ namespace CarritoCompras.Controllers
         [HttpGet]
         public IActionResult RegistrarEmpleado()
         {
-            return View();
+            return View("RegistroUsuario");
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarEmpleado(Registrar modelo)
+        public async Task<IActionResult> RegistrarEmpleado(string email)
         {
+            
             if (ModelState.IsValid)
             {
                 Usuario usr1 = new Usuario()
                 {
-                    Email = modelo.Email,
-                    UserName = modelo.Email
+                    Email = email,
+                    UserName = email
                 };
                 var resultadoCreateUser = await _userManager.CreateAsync(usr1, "Password1!");
 
                 if (resultadoCreateUser.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(usr1, "Empleado");
-                    await _signInManager.SignInAsync(usr1, true);
                     return base.RedirectToAction("Create", "Usuarios", new { id = usr1.Id });
                 }
 
@@ -67,8 +67,6 @@ namespace CarritoCompras.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistroUsuario(Registrar modelo)
         {
-
-
 
             if (ModelState.IsValid)
             {
