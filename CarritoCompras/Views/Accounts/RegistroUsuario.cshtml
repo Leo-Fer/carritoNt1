@@ -16,7 +16,7 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             @{
-                if (User.IsInRole("Cliente"))
+                if (!User.Identity.IsAuthenticated)
                 {
                     <div class="form-group">
                         <label asp-for="Password" class="control-label"></label>
