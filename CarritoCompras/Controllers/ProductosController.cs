@@ -26,7 +26,12 @@ namespace CarritoCompras.Controllers
             var miContexto = _context.Productos.Include(p => p.Categoria);
             return View(await miContexto.ToListAsync());
         }
+        public async Task<IActionResult> MostrarProductosPorCategoria(int? id)
+        {
+            var miContexto = _context.Productos.Where(p => p.CategoriaId == id);
 
+            return View(await miContexto.ToListAsync());
+        }
         // GET: Productos/Details/5
         public async Task<IActionResult> Details(int? id)
         {

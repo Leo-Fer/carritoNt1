@@ -133,7 +133,7 @@ namespace CarritoCompras.Controllers
                         return Redirect(returnl);
                     }
                    
-                    return RedirectToAction("Index", "Productos");
+                    return RedirectToAction("Index", "Categorias");
                 }
 
                 ModelState.AddModelError(string.Empty, "Inicio de sesión incorrecto.");

@@ -1,20 +1,11 @@
-﻿@model IEnumerable<CarritoCompras.Models.Categoria>
+﻿@model IEnumerable<CarritoCompras.Models.Producto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-@{
-    if (User.IsInRole("Empleado"))
-    {
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
-    }
-
-}
+<h1>Productos</h1>
 
 <table class="table">
     <thead>
@@ -25,6 +16,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Descripcion)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioVigente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -33,21 +33,37 @@
         {
             <tr>
                 <td>
-                    <a asp-action="MostrarProductosPorCategoria" asp-controller="Productos" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Nombre)</a>
-                    
+                    @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Descripcion)
                 </td>
-
-                <!-- 
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecioVigente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Activo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Descripcion)
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
-                -->
             </tr>
         }
     </tbody>
 </table>
+
+
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
