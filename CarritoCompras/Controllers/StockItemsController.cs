@@ -74,8 +74,20 @@ namespace CarritoCompras.Controllers
            
             if (ModelState.IsValid)
             {
-               _context.Add(stockItem);
-               await _context.SaveChangesAsync();
+                StockItem existeStk = _context.StockItems.AsNoTracking().FirstOrDefault(s => s.ProductoId == stockItem.ProductoId && s.SucursalId == stockItem.SucursalId);
+                if(existeStk != null)
+                {
+
+                    int cantidadEnStock = existeStk.Cantidad;
+                    stockItem.Cantidad += cantidadEnStock;
+                    _context.Update(stockItem);
+                    await _context.SaveChangesAsync();
+                }
+                else 
+                { 
+                    _context.Add(stockItem);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SucursalId"] = new SelectList(_context.Sucursales, "Id", "Direccion", stockItem.SucursalId);
