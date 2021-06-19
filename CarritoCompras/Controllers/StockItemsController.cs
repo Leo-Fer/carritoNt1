@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarritoCompras.Controllers
 {
@@ -47,10 +48,19 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: StockItems/Create
-        public IActionResult Create()
+        [Authorize(Roles="Empleado")]
+        public async Task<IActionResult> Create(int Id)
         {
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion");
-            ViewData["SucursalId"] = new SelectList(_context.Sucursales, "Id", "Direccion");
+            ViewData["SucursalId"] = new SelectList(_context.Sucursales, "Id", "Nombre");
+            if (Id != null)
+            {
+                StockItem stockItem = new StockItem();
+                //Producto producto = _context.Productos.FirstOrDefault(p => p.Id == Id);
+                //stockItem.ProductoId = Id;
+                ViewData["ProductoId"] = Id;
+                return View("Create");
+            }
+
             return View();
         }
 
@@ -61,13 +71,13 @@ namespace CarritoCompras.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Cantidad,SucursalId,ProductoId")] StockItem stockItem)
         {
+           
             if (ModelState.IsValid)
             {
-                _context.Add(stockItem);
-                await _context.SaveChangesAsync();
+               _context.Add(stockItem);
+               await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion", stockItem.ProductoId);
             ViewData["SucursalId"] = new SelectList(_context.Sucursales, "Id", "Direccion", stockItem.SucursalId);
             return View(stockItem);
         }
