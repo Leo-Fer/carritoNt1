@@ -1,6 +1,7 @@
 ﻿using CarritoCompras.Data;
 using CarritoCompras.Models;
 using CarritoCompras.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -32,12 +33,14 @@ namespace CarritoCompras.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult RegistrarEmpleado()
         {
             return View("RegistroUsuario");
         }
 
         [HttpPost]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> RegistrarEmpleado(string email)
         {
             

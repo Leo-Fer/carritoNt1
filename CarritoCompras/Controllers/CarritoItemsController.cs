@@ -47,10 +47,14 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: CarritoItems/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
-            ViewData["CarritoId"] = new SelectList(_context.Carritos, "Id", "Id");
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion");
+            CarritoItem carritoItem;
+            if (id != null)
+            {
+                carritoItem = await _context.CarritoItems.FindAsync(id);
+                return View("Create", carritoItem);
+            }
             return View();
         }
 
@@ -61,15 +65,14 @@ namespace CarritoCompras.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
         {
+            CarritoItem car1 = _context.CarritoItems.Find(carritoItem.Id);
+
             if (ModelState.IsValid)
             {
-                _context.Add(carritoItem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                 _context.CarritoItems.Update(car1);
+                 _context.SaveChanges();
             }
-            ViewData["CarritoId"] = new SelectList(_context.Carritos, "Id", "Id", carritoItem.CarritoId);
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion", carritoItem.ProductoId);
-            return View(carritoItem);
+            return RedirectToAction("Index", "Categorias");
         }
 
         // GET: CarritoItems/Edit/5
@@ -162,5 +165,24 @@ namespace CarritoCompras.Controllers
         {
             return _context.CarritoItems.Any(e => e.Id == id);
         }
+
+        // ESTE METODO HAY QUE MANDARLO A UNA VISTA PROPIA PARA QUE EL CLIENTE AGREGUE LA CANTIDAD
+        // DE PRODUCTOS QUE QUIERE COMPRAR.
+        public async Task<IActionResult> Agregar(int id, string user)
+        {
+            Usuario usr1 = await _context.Usuarios.FirstOrDefaultAsync(p => p.Email == user);            
+
+            var carrito = await _context.Carritos.FirstOrDefaultAsync(c => c.ClienteId == usr1.Id && c.Activo == true);
+            var prod = await _context.Productos.FirstOrDefaultAsync(p => p.Id == id);
+
+            CarritoItem carritoItem = new CarritoItem();
+            carritoItem.CarritoId = carrito.Id;
+            carritoItem.ProductoId = prod.Id;
+            _context.CarritoItems.Add(carritoItem);
+            _context.SaveChanges();
+
+        return RedirectToAction("Create", new { id = carritoItem.Id });
+        }
     }
+        
 }

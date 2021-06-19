@@ -111,6 +111,13 @@ namespace CarritoCompras.Controllers
                     clt.FechaAlta = DateTime.Now;
                     clt.Telefono = cliente.Telefono;
                     resultado = await _userManager.UpdateAsync(clt);
+
+                    Carrito carrito = new Carrito();
+                    carrito.Activo = true;
+                    carrito.ClienteId = cliente.Id;
+
+                    var exito = _context.Carritos.Add(carrito);
+                    _context.SaveChanges();
                 }
 
             }
@@ -205,4 +212,6 @@ namespace CarritoCompras.Controllers
             return _context.Clientes.Any(e => e.Id == id);
         }
     }
+
+    
 }
