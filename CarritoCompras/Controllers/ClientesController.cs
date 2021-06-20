@@ -83,7 +83,7 @@ namespace CarritoCompras.Controllers
                 IdentityResult resu = await CreoCliente(cliente);
 
 
-                return RedirectToAction("index", "Productos");
+                return RedirectToAction("index", "Home");
             }
             return View(cliente);
         }

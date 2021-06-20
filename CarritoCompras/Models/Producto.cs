@@ -16,7 +16,7 @@ namespace CarritoCompras.Models {
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
         [DataType(DataType.Currency)]
         [Range(0.01, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
-        [Display(Name ="Precio vigente")]
+        [Display(Name ="Precio unitario")]
         public double PrecioVigente { get; set; }
 
         public bool Activo { get; set; } = true;

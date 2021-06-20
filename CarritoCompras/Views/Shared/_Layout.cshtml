@@ -61,8 +61,14 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="CerrarSesion">Salir</a>
                                 </li>
                             }
-
+                            if (User.IsInRole("Cliente"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="CarritoItems" asp-action="MostrarCarrito" asp-route-email="@User.Identity.Name">Ver Carrito</a>
+                                </li>
                             }
+                        }
+
                     </ul>
                 </div>
             </div>

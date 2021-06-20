@@ -7,22 +7,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarritoCompras.Controllers
 {
     public class CarritoItemsController : Controller
     {
         private readonly MiContexto _context;
+        private readonly UserManager<Usuario> _userManager;
 
-        public CarritoItemsController(MiContexto context)
+
+        public CarritoItemsController(MiContexto context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: CarritoItems
         public async Task<IActionResult> Index()
         {
             var miContexto = _context.CarritoItems.Include(c => c.Carrito).Include(c => c.Producto);
+            return View(await miContexto.ToListAsync());
+        }
+
+        public async Task<IActionResult> MostrarCarrito(string email)
+        {
+            Usuario usr1 = _context.Usuarios.FirstOrDefault(u => u.Email == email);
+
+            Carrito car1 = _context.Carritos.FirstOrDefault(c => c.ClienteId == usr1.Id && c.Activo == true);
+
+            var miContexto = _context.CarritoItems.Where(c => c.CarritoId == car1.Id).Include(c => c.Producto);
             return View(await miContexto.ToListAsync());
         }
 
@@ -66,6 +80,7 @@ namespace CarritoCompras.Controllers
         public async Task<IActionResult> Create([Bind("Id,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
         {
             CarritoItem car1 = _context.CarritoItems.Find(carritoItem.Id);
+            car1.Cantidad = carritoItem.Cantidad;            
 
             if (ModelState.IsValid)
             {
@@ -123,7 +138,11 @@ namespace CarritoCompras.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                var car1 = _context.Carritos.FirstOrDefault(c => c.Id == carritoItem.CarritoId);
+                var cli = _context.Usuarios.FirstOrDefault(c => c.Id == car1.ClienteId);            
+                string email = cli.Email;
+                return RedirectToAction("MostrarCarrito", new { email = email });
             }
             ViewData["CarritoId"] = new SelectList(_context.Carritos, "Id", "Id", carritoItem.CarritoId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion", carritoItem.ProductoId);
@@ -166,8 +185,6 @@ namespace CarritoCompras.Controllers
             return _context.CarritoItems.Any(e => e.Id == id);
         }
 
-        // ESTE METODO HAY QUE MANDARLO A UNA VISTA PROPIA PARA QUE EL CLIENTE AGREGUE LA CANTIDAD
-        // DE PRODUCTOS QUE QUIERE COMPRAR.
         public async Task<IActionResult> Agregar(int id, string user)
         {
             Usuario usr1 = await _context.Usuarios.FirstOrDefaultAsync(p => p.Email == user);            
