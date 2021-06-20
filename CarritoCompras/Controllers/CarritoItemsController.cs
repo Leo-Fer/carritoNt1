@@ -177,7 +177,12 @@ namespace CarritoCompras.Controllers
             var carritoItem = await _context.CarritoItems.FindAsync(id);
             _context.CarritoItems.Remove(carritoItem);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+
+            var car1 = _context.Carritos.FirstOrDefault(c => c.Id == carritoItem.CarritoId);
+            var cli = _context.Usuarios.FirstOrDefault(c => c.Id == car1.ClienteId);
+            string email = cli.Email;
+            return RedirectToAction("MostrarCarrito", new { email = email });
         }
 
         private bool CarritoItemExists(int id)
