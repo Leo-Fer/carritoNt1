@@ -127,6 +127,81 @@ namespace CarritoCompras.Controllers
 
 
         // GET: Clientes/Edit/5
+        public async Task<IActionResult> EditarDatosContacto(string userName)
+        {
+            if (userName == null)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _userManager.FindByNameAsync(userName);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["userMail"] = cliente.Email;
+            return View(cliente);
+        }
+
+        // POST: Clientes/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarDatosContacto(int id, [Bind("Dni,Id,Nombre,Apellido,Direccion,Telefono,Email,FechaAlta,Password,UserRol")] Cliente cliente)
+        {
+            if (id != cliente.Id)
+            {
+                return NotFound();
+            }
+
+            Usuario cli = await _userManager.FindByNameAsync(cliente.Email);
+            cli.Direccion = cliente.Direccion;
+            cli.Telefono = cliente.Telefono;
+
+            if (ModelState.IsValid)
+            {
+                
+                try
+                {
+                    await _userManager.UpdateAsync(cli);                    
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ClienteExists(cliente.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            return View(cliente);
+        }
+
+        // GET: Clientes/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            return View(cliente);
+        }
+
+        // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -175,24 +250,6 @@ namespace CarritoCompras.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
-        }
-
-        // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-
             return View(cliente);
         }
 

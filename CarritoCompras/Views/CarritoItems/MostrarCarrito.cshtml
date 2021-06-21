@@ -74,27 +74,18 @@
         <div class="text-center">No hay productos agregados en el carrito actualmente.</div>
     }
     else
-    {
-        <a href="C:\Users\fermi\OneDrive\Desktop\CarritoCompras\CarritoCompras\CarritoCompras\Models\ErrorViewModel.cs">C:\Users\fermi\OneDrive\Desktop\CarritoCompras\CarritoCompras\CarritoCompras\Models\ErrorViewModel.cs</a>
+    {        
         <div class="font-weight-bold text-right" style="font-size: 16px;">Subtotal: @total.ToString("C")</div>
         <div class="mt-4 text-right">
-            <a asp-action="VaciarCarrito" asp-controller="CarritoItems" asp-route-userName="@User.Identity.Name"><i class="far fa-trash-alt"></i> Vaciar Carrito</a>
+            <a asp-action="VaciarCarrito" asp-controller="CarritoItems" asp-route-userName="@User.Identity.Name"><i class="far fa-trash-alt"></i> Vaciar Carrito </a> |
+            @if (total != 0)
+            {
+                <a asp-action="FinalizarCompra" asp-controller="Compras"> Finalizar Compra</a>
+            }
+
         </div>
     }
 </div>
-
-
-
-@*  *@
-
-
-
-
-
-
-
-
-
 
 
 
