@@ -61,12 +61,16 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: CarritoItems/Create
-        public async Task<IActionResult> Create(int? id)
+        public async Task<IActionResult> Create(int prodId, string user)
         {
-            CarritoItem carritoItem;
-            if (id != null)
+            if (prodId != 0)
             {
-                carritoItem = await _context.CarritoItems.FindAsync(id);
+                CarritoItem carritoItem = new CarritoItem();
+                carritoItem.ProductoId = prodId;
+                Usuario usr1 = _context.Usuarios.FirstOrDefault(u => u.Email == user);
+                Carrito car1 = _context.Carritos.FirstOrDefault(c => c.ClienteId == usr1.Id && c.Activo);
+
+                carritoItem.CarritoId = car1.Id;
                 return View("Create", carritoItem);
             }
             return View();
@@ -79,12 +83,12 @@ namespace CarritoCompras.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
         {
-            CarritoItem car1 = _context.CarritoItems.Find(carritoItem.Id);
+            CarritoItem car1 = new CarritoItem();
             car1.Cantidad = carritoItem.Cantidad;            
 
             if (ModelState.IsValid)
             {
-                 _context.CarritoItems.Update(car1);
+                 _context.CarritoItems.Add(car1);
                  _context.SaveChanges();
             }
             return RedirectToAction("Index", "Categorias");

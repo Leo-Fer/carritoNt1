@@ -15,8 +15,7 @@ namespace CarritoCompras.Models
 		[Range(0, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorDeRange)]
 		public double ValorUnitario { get; set; }
 		[Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
-		[Range(0, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorDeRange)]
-		// maxValue reemplazar con cantidad del stock para el item
+		[Range(1, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorDeRange)]
 		public int Cantidad { get; set; }
 		[NotMapped]
 		[Range(0.00, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]

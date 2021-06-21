@@ -59,9 +59,9 @@
                         <a asp-action="IniciarSesion" asp-controller="Accounts">Agregar a carrito</a>
 
                     }
-                    else
+                    else if (item.Activo)
                     {
-                        <a asp-action="Agregar" asp-controller="CarritoItems" asp-route-id="@item.Id" asp-route-user="@User.Identity.Name">Agregar a carrito</a>
+                        <a asp-action="Create" asp-controller="CarritoItems" asp-route-prodId="@item.Id" asp-route-user="@User.Identity.Name">Agregar a carrito</a>
                     }
 
                     <p>@User.Identity.Name</p>
