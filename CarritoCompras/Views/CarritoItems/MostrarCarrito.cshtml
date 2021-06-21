@@ -5,6 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    double total = 0;
+    foreach (var item in Model)
+    {
+
+        total = total + (item.Cantidad * item.Producto.PrecioVigente);
+    }
+
+}
+
+<div class="col-8">
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -29,6 +41,7 @@
     <tbody>
         @foreach (var item in Model)
         {
+            double precioParcial = item.Cantidad * item.Producto.PrecioVigente;
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Producto.Nombre)
@@ -43,7 +56,7 @@
                     @Html.DisplayFor(modelItem => item.Producto.PrecioVigente)
                 </td>
                 <td>
-                    $@(item.Cantidad*item.Producto.PrecioVigente)
+                    @precioParcial.ToString("C")
                 </td>
 
                 <td>
@@ -52,29 +65,27 @@
                 </td>
             </tr>
         }
-    <tr>
-        <td ></td>
-        <td ></td>
-        <td ></td>
-        <td >Subtotal</td>
-        <td>
-            @{
-                double total = 0;
-                foreach (var item in Model)
-                {
-                    total = total + (item.Cantidad * item.Producto.PrecioVigente);
-
-                }
-                <p>$@total</p>
-            }
-        </td>
-    </tr>
     </tbody>
 </table>
-    <a asp-action="VaciarCarrito" asp-controller="CarritoItems" asp-route-userName="@User.Identity.Name"><i class="far fa-trash-alt"></i> Vaciar Carrito</a>    
+
+<div class="col-11 mt-5">
+    @if (total == 0)
+    {
+        <div class="text-center">No hay productos agregados en el carrito actualmente.</div>
+    }
+    else
+    {
+        <a href="C:\Users\fermi\OneDrive\Desktop\CarritoCompras\CarritoCompras\CarritoCompras\Models\ErrorViewModel.cs">C:\Users\fermi\OneDrive\Desktop\CarritoCompras\CarritoCompras\CarritoCompras\Models\ErrorViewModel.cs</a>
+        <div class="font-weight-bold text-right" style="font-size: 16px;">Subtotal: @total.ToString("C")</div>
+        <div class="mt-4 text-right">
+            <a asp-action="VaciarCarrito" asp-controller="CarritoItems" asp-route-userName="@User.Identity.Name"><i class="far fa-trash-alt"></i> Vaciar Carrito</a>
+        </div>
+    }
+</div>
 
 
 
+@*  *@
 
 
 
