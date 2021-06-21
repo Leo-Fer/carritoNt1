@@ -205,35 +205,24 @@ namespace CarritoCompras.Controllers
             string email = cli.Email;
             return RedirectToAction("MostrarCarrito", new { email = email });
         }
-        /*
-                public async Task<IActionResult> VaciarCarrito(string userName)
-                {
-                    Usuario userBuscado = _context.Usuarios.FirstOrDefault(u => u.Email == userName);
-                    Carrito carritoDelUsuario = _context.Carritos.FirstOrDefault(c => c.ClienteId == userBuscado.Id);
-
-                    var listaDeCarritoItems = _context.CarritoItems.Where(c => c.CarritoId == carritoDelUsuario.Id).ToList();
-                    //List < CarritoItem >
-
-                    return RedirectToAction("VaciarCarritoPost", listaDeCarritoItems);
-                }
+        
+        public async Task<IActionResult> VaciarCarrito(string userName)
+        {
+            Usuario userBuscado = _context.Usuarios.FirstOrDefault(u => u.Email == userName);      
+            Carrito carritoDelUsuario = _context.Carritos.FirstOrDefault(c => c.ClienteId == userBuscado.Id);
+            var listaDeCarritoItems = _context.CarritoItems.Where(c => c.CarritoId == carritoDelUsuario.Id).ToList();
+            _context.CarritoItems.RemoveRange(listaDeCarritoItems);
+            _context.SaveChanges();
 
 
-                [HttpPost]
-                [ValidateAntiForgeryToken]
-                public async Task<IActionResult> VaciarCarritoPost(IEnumerable<CarritoItem> listaDeCarritoItems)
-                {
+            return RedirectToAction("MostrarCarrito", new { email = userName });
+        }
 
-                    _context.CarritoItems.RemoveRange(listaDeCarritoItems);
-
-                    return RedirectToAction("Home","Index");
-                }
-  */
         private bool CarritoItemExists(int id)
         {
             return _context.CarritoItems.Any(e => e.Id == id);
         }
-
-      
+              
     }
         
 }
