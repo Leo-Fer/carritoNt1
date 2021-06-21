@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Carrito</h1>
 
-<h4>CarritoItem</h4>
+<h4>Agregar producto</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,14 +29,14 @@
                 <span asp-validation-for="ProductoId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Agregar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="MostrarProductosPorCategoria" asp-controller="Productos" asp-route-id=@ViewData["categoriaId"] >Back to List</a>
+    <a asp-action="MostrarProductosPorCategoria" asp-controller="Productos" asp-route-id=@ViewData["categoriaId"] >Volver</a>
 </div>
 
 @section Scripts {

@@ -98,10 +98,21 @@ namespace CarritoCompras.Controllers
             car1.ProductoId = carritoItem.ProductoId;
             car1.CarritoId = carritoItem.CarritoId;
 
+            CarritoItem existe = _context.CarritoItems.FirstOrDefault(c => c.ProductoId == car1.ProductoId &&
+                                                                        c.CarritoId == car1.CarritoId);
+
             if (ModelState.IsValid)
             {
-                 _context.CarritoItems.Add(car1);
-                 _context.SaveChanges();
+                if (existe == null)
+                { 
+                    _context.CarritoItems.Add(car1);
+                    _context.SaveChanges();
+                } else
+                {
+                    existe.Cantidad += car1.Cantidad;
+                    _context.CarritoItems.Update(existe);
+                    _context.SaveChanges();
+                }
             }
 
             Producto proudctoEncontrado = _context.Productos.FirstOrDefault(p => p.Id == carritoItem.ProductoId);
