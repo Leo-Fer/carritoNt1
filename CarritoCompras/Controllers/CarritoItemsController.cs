@@ -71,6 +71,16 @@ namespace CarritoCompras.Controllers
                 Carrito car1 = _context.Carritos.FirstOrDefault(c => c.ClienteId == usr1.Id && c.Activo);
 
                 carritoItem.CarritoId = car1.Id;
+
+                ViewData["ProductoId"] = prodId;
+                ViewData["CarritoId"] = car1.Id;
+
+
+                Producto proudctoEncontrado = _context.Productos.FirstOrDefault(p => p.Id == prodId);
+                int categoriaId = proudctoEncontrado.CategoriaId;
+                ViewData["categoriaId"] = categoriaId;
+
+
                 return View("Create", carritoItem);
             }
             return View();
@@ -84,14 +94,20 @@ namespace CarritoCompras.Controllers
         public async Task<IActionResult> Create([Bind("Id,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
         {
             CarritoItem car1 = new CarritoItem();
-            car1.Cantidad = carritoItem.Cantidad;            
+            car1.Cantidad = carritoItem.Cantidad;
+            car1.ProductoId = carritoItem.ProductoId;
+            car1.CarritoId = carritoItem.CarritoId;
 
             if (ModelState.IsValid)
             {
                  _context.CarritoItems.Add(car1);
                  _context.SaveChanges();
             }
-            return RedirectToAction("Index", "Categorias");
+
+            Producto proudctoEncontrado = _context.Productos.FirstOrDefault(p => p.Id == carritoItem.ProductoId);
+            int categoriaId = proudctoEncontrado.CategoriaId;
+
+            return RedirectToAction("MostrarProductosPorCategoria", "Productos",new { id = categoriaId });
         }
 
         // GET: CarritoItems/Edit/5
@@ -173,6 +189,7 @@ namespace CarritoCompras.Controllers
             return View(carritoItem);
         }
 
+
         // POST: CarritoItems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -188,27 +205,35 @@ namespace CarritoCompras.Controllers
             string email = cli.Email;
             return RedirectToAction("MostrarCarrito", new { email = email });
         }
+        /*
+                public async Task<IActionResult> VaciarCarrito(string userName)
+                {
+                    Usuario userBuscado = _context.Usuarios.FirstOrDefault(u => u.Email == userName);
+                    Carrito carritoDelUsuario = _context.Carritos.FirstOrDefault(c => c.ClienteId == userBuscado.Id);
 
+                    var listaDeCarritoItems = _context.CarritoItems.Where(c => c.CarritoId == carritoDelUsuario.Id).ToList();
+                    //List < CarritoItem >
+
+                    return RedirectToAction("VaciarCarritoPost", listaDeCarritoItems);
+                }
+
+
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> VaciarCarritoPost(IEnumerable<CarritoItem> listaDeCarritoItems)
+                {
+
+                    _context.CarritoItems.RemoveRange(listaDeCarritoItems);
+
+                    return RedirectToAction("Home","Index");
+                }
+  */
         private bool CarritoItemExists(int id)
         {
             return _context.CarritoItems.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> Agregar(int id, string user)
-        {
-            Usuario usr1 = await _context.Usuarios.FirstOrDefaultAsync(p => p.Email == user);            
-
-            var carrito = await _context.Carritos.FirstOrDefaultAsync(c => c.ClienteId == usr1.Id && c.Activo == true);
-            var prod = await _context.Productos.FirstOrDefaultAsync(p => p.Id == id);
-
-            CarritoItem carritoItem = new CarritoItem();
-            carritoItem.CarritoId = carrito.Id;
-            carritoItem.ProductoId = prod.Id;
-            _context.CarritoItems.Add(carritoItem);
-            _context.SaveChanges();
-
-        return RedirectToAction("Create", new { id = carritoItem.Id });
-        }
+      
     }
         
 }

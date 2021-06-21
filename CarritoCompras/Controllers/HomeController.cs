@@ -1,4 +1,5 @@
-﻿using CarritoCompras.Models;
+﻿using CarritoCompras.Data;
+using CarritoCompras.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,11 +12,14 @@ namespace CarritoCompras.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly MiContexto _context;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(MiContexto context, ILogger<HomeController> logger)
         {
+            _context = context;
             _logger = logger;
+            MostrarCategorias();
         }
 
         public IActionResult Index()
@@ -33,5 +37,15 @@ namespace CarritoCompras.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MostrarCategorias()
+        {
+            List<Categoria> listaDeCategorias = _context.Categorias.ToList();
+            ViewBag.listaDeCategorias = new List<String> { "Hola", "Gola"};
+           //ViewData["listaDeCategorias"] = listaDeCategorias;
+            return View();
+        }
+
     }
 }
