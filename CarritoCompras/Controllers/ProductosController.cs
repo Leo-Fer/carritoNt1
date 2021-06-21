@@ -52,6 +52,7 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Productos/
+        [Authorize(Roles ="Empleado")]
         public IActionResult Create()
         {
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Descripcion");
@@ -61,6 +62,7 @@ namespace CarritoCompras.Controllers
         // POST: Productos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Empleado")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,PrecioVigente,Activo,CategoriaId")] Producto producto)
@@ -76,6 +78,7 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Productos/Edit/5
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,6 +100,7 @@ namespace CarritoCompras.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion,PrecioVigente,Activo,CategoriaId")] Producto producto)
         {
             if (id != producto.Id)
@@ -129,6 +133,7 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Productos/Delete/5
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,6 +153,7 @@ namespace CarritoCompras.Controllers
         }
 
         // POST: Productos/Delete/5
+        [Authorize(Roles = "Empleado")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

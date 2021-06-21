@@ -45,10 +45,20 @@
     </dl>
 </div>
 <div>
-    @if (!signInManager.IsSignedIn(User) && Model.Activo)
+    @if (Model.Activo && User.IsInRole("Cliente"))
     {
-        <a asp-action="Agregar" asp-controller="CarritoItems" asp-route-id="@Model.Id" asp-route-user="@User.Identity.Name">Agregar a carrito</a>
-    }
 
-    | <a asp-action="MostrarProductosPorCategoria" asp-controller="Productos" asp-route-id="@Model.CategoriaId">Back to List</a>
+        <a asp-action="Create" asp-controller="CarritoItems" asp-route-prodId="@Model.Id" asp-route-user="@User.Identity.Name">Agregar a carrito |</a>
+
+    }
+    @if (User.IsInRole("Cliente"))
+    {
+        <a asp-action="MostrarProductosPorCategoria" asp-controller="Productos" asp-route-id="@Model.CategoriaId">Volver</a>
+    }
+    
+    @if(User.IsInRole("Empleado"))
+    {
+        <a asp-action="Index">Volver</a>
+    }
+            
 </div>

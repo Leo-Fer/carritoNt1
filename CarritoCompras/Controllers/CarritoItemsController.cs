@@ -125,6 +125,13 @@ namespace CarritoCompras.Controllers
             }
             ViewData["CarritoId"] = new SelectList(_context.Carritos, "Id", "Id", carritoItem.CarritoId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion", carritoItem.ProductoId);
+
+            //leo
+            Producto productoEncontrado = _context.Productos.FirstOrDefault(p => p.Id == carritoItem.ProductoId);
+            string nombreProd = productoEncontrado.Nombre;
+            ViewData["ProductoNombre"] = nombreProd;
+            //leo
+
             return View(carritoItem);
         }
 
@@ -185,6 +192,10 @@ namespace CarritoCompras.Controllers
             {
                 return NotFound();
             }
+
+            Producto productoEncontrado = _context.Productos.FirstOrDefault(p => p.Id == carritoItem.ProductoId);
+            string nombreProd = productoEncontrado.Nombre;
+            ViewData["ProductoNombre"] = nombreProd;
 
             return View(carritoItem);
         }

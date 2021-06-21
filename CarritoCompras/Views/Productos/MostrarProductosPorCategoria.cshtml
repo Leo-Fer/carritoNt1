@@ -16,16 +16,7 @@
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.PrecioVigente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Activo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
             </th>
             <th></th>
         </tr>
@@ -38,21 +29,10 @@
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.PrecioVigente)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Activo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Categoria.Descripcion)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
                     @if (!signInManager.IsSignedIn(User))
                     {
 
@@ -63,14 +43,18 @@
                     {
                         <a asp-action="Create" asp-controller="CarritoItems" asp-route-prodId="@item.Id" asp-route-user="@User.Identity.Name">Agregar a carrito</a>
                     }
+                    else
+                    {
+                        <a href="" style="color:black">Producto pausado</a>
+                    }
 
-                    <p>@User.Identity.Name</p>
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
+<a asp-action="Index" asp-controller="Categorias">Volver</a>
 
 
 

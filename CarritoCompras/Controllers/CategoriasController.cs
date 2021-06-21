@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarritoCompras.Controllers
 {
@@ -44,6 +45,7 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Categorias/Create
+        [Authorize(Roles="Empleado")]
         public IActionResult Create()
         {
             return View();
@@ -52,8 +54,10 @@ namespace CarritoCompras.Controllers
         // POST: Categorias/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion")] Categoria categoria)
         {
             if (ModelState.IsValid)
@@ -71,6 +75,7 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Categorias/Edit/5
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +96,7 @@ namespace CarritoCompras.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion")] Categoria categoria)
         {
             if (id != categoria.Id)
