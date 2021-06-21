@@ -6,13 +6,15 @@
     <title>@ViewData["Title"] - CarritoCompras</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="https://i.ibb.co/mzMfz2z/Logo-carrito-libre.png" alt="logo" />
+                <a class="navbar-brand text-left" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="https://i.ibb.co/mzMfz2z/Logo-carrito-libre.png" alt="logo" class="w-50"/>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +66,7 @@
                             if (User.IsInRole("Cliente"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="CarritoItems" asp-action="MostrarCarrito" asp-route-email="@User.Identity.Name">Ver Carrito</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="CarritoItems" asp-action="MostrarCarrito" asp-route-email="@User.Identity.Name"><i class="fas fa-shopping-cart"></i></a>
                                 </li>
                             }
                         }
