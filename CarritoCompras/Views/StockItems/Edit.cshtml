@@ -18,17 +18,17 @@
                 <input asp-for="Cantidad" class="form-control" />
                 <span asp-validation-for="Cantidad" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="SucursalId" />
-            <input type="hidden" asp-for="ProductoId" />
+            <input type="hidden" asp-for="SucursalId" value="@ViewData["SucursalId"]"/>
+            <input type="hidden" asp-for="ProductoId" value="@ViewData["ProductoId"]"/>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Volver</a>
 </div>
 
 @section Scripts {

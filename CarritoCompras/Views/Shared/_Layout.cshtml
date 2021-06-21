@@ -62,12 +62,6 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="RegistrarEmpleado">Crear Empleado</a>
                                 </li>
                             }
-                            if (User.Identity.IsAuthenticated)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="CerrarSesion">Salir</a>
-                                </li>
-                            }
                             if (User.IsInRole("Cliente"))
                             {
                                 <li class="nav-item">
@@ -80,6 +74,12 @@
                                     <a class="nav-link text-dark" asp-action="EditarDatosContacto" asp-controller="Clientes" asp-route-userName="@User.Identity.Name">Datos de contacto</a>
                                 </li>
 
+                            }
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="CerrarSesion">Salir</a>
+                                </li>
                             }
 
                         }
