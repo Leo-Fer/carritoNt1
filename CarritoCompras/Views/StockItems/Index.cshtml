@@ -29,18 +29,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Sucursal.Direccion)
+                @Html.DisplayFor(modelItem => item.Sucursal.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                @Html.DisplayFor(modelItem => item.Producto.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Cantidad)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                <a asp-action="Edit" asp-route-productoId="@item.ProductoId" asp-route-sucursalId="@item.SucursalId">Actualizar cantidad</a>
             </td>
         </tr>
 }

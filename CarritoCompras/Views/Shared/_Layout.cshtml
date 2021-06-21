@@ -62,27 +62,24 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="RegistrarEmpleado">Crear Empleado</a>
                                 </li>
                             }
-                            if (User.Identity.IsAuthenticated && !User.IsInRole("Cliente"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="CerrarSesion">Salir</a>
-                                </li>
-                            }
                             if (User.IsInRole("Cliente"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="CarritoItems" asp-action="MostrarCarrito" asp-route-email="@User.Identity.Name"><i class="fas fa-shopping-cart"></i></a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark">@User.Identity.Name </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-action="EditarDatosContacto" asp-controller="Clientes" asp-route-userName="@User.Identity.Name">Datos de contacto</a>
+                                </li>
 
-                                <div class="dropdown ml-3">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-user mr-2"></i> @User.Identity.Name
-                                    </button>
-                                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-                                        <a class="nav-link text-dark" asp-action="EditarDatosContacto" asp-controller="Clientes" asp-route-userName="@User.Identity.Name">Editar datos</a>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="CerrarSesion">Cerrar sesión</a>
-                                    </div>
-                                </div>
+                            }
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="CerrarSesion">Salir</a>
+                                </li>
                             }
 
                         }
