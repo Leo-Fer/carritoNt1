@@ -42,18 +42,30 @@ namespace CarritoCompras.Controllers
 
             bool sePuedeComprar = true;
             foreach(CarritoItem carrito in carritoItemsOfCustomer)
-            {
+            {            
+
                 int productoRecorrido = carrito.ProductoId;
                 int cantidadProducto = carrito.Cantidad;
-                if (stockItemsEnSucursal.Find(si => si.ProductoId == productoRecorrido) != null && sePuedeComprar)
+                if (stockItemsEnSucursal.FirstOrDefault(si => si.ProductoId == productoRecorrido) != null && sePuedeComprar)
                 {
-                    int cantidadEnStock = stockItemsEnSucursal.Find(si => si.ProductoId == productoRecorrido).Cantidad;
+                    int cantidadEnStock = stockItemsEnSucursal.FirstOrDefault(si => si.ProductoId == productoRecorrido).Cantidad;
+
                     if (cantidadEnStock < cantidadProducto)
                     {
                         sePuedeComprar = false;
                         return RedirectToAction("CompraFail", "Compras");
                     }
                 }
+
+                //PREVIENE QUE SE ROMPA CUANDO LA SUCURSAL NO TIENE STOCK DEL PRODUCTO (ARRIBA CHEQUEA LA CANTIDAD SI TIENE)
+
+                if (stockItemsEnSucursal.FirstOrDefault(si => si.ProductoId == productoRecorrido) == null)
+                {
+                    sePuedeComprar = false;
+                    return RedirectToAction("CompraFail", "Compras");
+                }
+
+
             }
 
             return await descontarStockEnSucursal(carritoItemsOfCustomer, stockItemsEnSucursal, usr1.Id, car1.Id);
@@ -63,6 +75,7 @@ namespace CarritoCompras.Controllers
 
         public async Task<IActionResult> descontarStockEnSucursal(List<CarritoItem> carritoItemsComprados, List<StockItem> stockItemsEnSucursal, int usuarioId, int carritoId)
         {
+            Double total = 0;
             //List<StockItem> stockItemsEnSucursal = _context.StockItems.Where(s => s.SucursalId == sucursalSeleccionada.Id).ToList();
             foreach (CarritoItem c in carritoItemsComprados)
             {
@@ -72,26 +85,52 @@ namespace CarritoCompras.Controllers
                 stockDelProducto.Cantidad = stockDelProducto.Cantidad - cantidadDelProducto;
                 _context.StockItems.Update(stockDelProducto);
                 await _context.SaveChangesAsync();
+
+                //CALCULO EL TOTAL PARA CREAR LA COMPRA
+
+                Producto prod = _context.Productos.FirstOrDefault(p => p.Id == c.ProductoId);
+                
+                total = total + c.Cantidad * prod.PrecioVigente;
+
+                //ELIMINO LOS CARRITOITEM
+
+                _context.CarritoItems.Remove(c);
+                _context.SaveChanges();
             }
 
-            return await CompraSuccess(usuarioId, carritoId);
+            return await CompraSuccess(usuarioId, carritoId, total);
         }
 
 
-        public async Task<IActionResult> CompraSuccess(int usuarioId, int carritoId)
+        public async Task<IActionResult> CompraSuccess(int usuarioId, int carritoId, double total)
         {
             Compra compraSuccess = new Compra();
             compraSuccess.ClienteId = usuarioId;
             compraSuccess.CarritoId = carritoId;
-            compraSuccess.Total = 1000;
+            compraSuccess.Total = total;
             _context.Compras.Add(compraSuccess);
             await _context.SaveChangesAsync();
+
+            //DESACTIVO CARRITO
+
+            Carrito carritoInactivo = _context.Carritos.FirstOrDefault(c => c.Id == carritoId);
+            carritoInactivo.Activo = false;
+
+            //CREO NUEVO CARRITO PARA EL CLIENTE
+
+            Carrito carritoActivo = new Carrito();
+            carritoActivo.Activo = true;
+            carritoActivo.ClienteId = usuarioId;
+            _context.Carritos.Add(carritoActivo);
+            _context.SaveChanges();
+            
+
             return View("CompraSuccess");
         }
 
         public async Task<IActionResult> CompraFail()
         {
-            return View("CompraFail");
+            return View();
         }
 
 
