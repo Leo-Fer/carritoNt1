@@ -76,5 +76,8 @@ else if (User.IsInRole("Cliente"))
     </tbody>
 </table>
 <div>
-    <a asp-action="MostrarCarrito" asp-controller="CarritoItems" asp-route-email="@User.Identity.Name">Volver al carrito</a>
-</div>
+    @if (User.IsInRole("Cliente"))
+    {
+        <a asp-action="MostrarCarrito" asp-controller="CarritoItems" asp-route-email="@User.Identity.Name">Volver al carrito</a>
+    }
+    </div>

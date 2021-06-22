@@ -18,5 +18,7 @@ namespace CarritoCompras.Models
 		[Required]
 		public int CarritoId { get; set; }
 
+		public DateTime fecha { get; set; }
+
 	}
 }

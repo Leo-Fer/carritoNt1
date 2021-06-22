@@ -25,7 +25,8 @@ namespace CarritoCompras.Controllers
         // GET: Compras
         public async Task<IActionResult> Index()
         {
-            var miContexto = _context.Compras.Include(c => c.Carrito).Include(c => c.Cliente);
+            var miContexto = _context.Compras.Include(c => c.Carrito).Include(c => c.Cliente).OrderByDescending(c => c.Total).Where(c => c.fecha.Month == DateTime.Now.Month);
+            
             return View(await miContexto.ToListAsync());
         }
 
@@ -104,6 +105,7 @@ namespace CarritoCompras.Controllers
             compraSuccess.ClienteId = usuarioId;
             compraSuccess.CarritoId = carritoId;
             compraSuccess.Total = total;
+            compraSuccess.fecha = DateTime.Now;
             _context.Compras.Add(compraSuccess);
             await _context.SaveChangesAsync();
 

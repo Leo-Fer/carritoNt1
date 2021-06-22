@@ -132,38 +132,6 @@ namespace CarritoCompras.Controllers
             return View(producto);
         }
 
-        // GET: Productos/Delete/5
-        [Authorize(Roles = "Empleado")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var producto = await _context.Productos
-                .Include(p => p.Categoria)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
-
-            return View(producto);
-        }
-
-        // POST: Productos/Delete/5
-        [Authorize(Roles = "Empleado")]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var producto = await _context.Productos.FindAsync(id);
-            _context.Productos.Remove(producto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool ProductoExists(int id)
         {
             return _context.Productos.Any(e => e.Id == id);
