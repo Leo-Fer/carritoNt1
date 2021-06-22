@@ -35,13 +35,29 @@ namespace CarritoCompras.Controllers
         {
             Usuario usr1 = await _userManager.FindByNameAsync(userName);
             Carrito car1 = _context.Carritos.FirstOrDefault(c => c.ClienteId == usr1.Id && c.Activo);
-
-            var carritoitems = _context.CarritoItems.Where(s => s.CarritoId == car1.Id).ToList();
-
             
+            List<CarritoItem> carritoItemsOfCustomer = _context.CarritoItems.Where(c => c.CarritoId == car1.Id).ToList();
+            Sucursal sucursalSeleccionada = _context.Sucursales.FirstOrDefault(s => s.Id == sucursalId);
+            List<StockItem> stockItemsEnSucursal = _context.StockItems.Where(s => s.SucursalId == sucursalSeleccionada.Id).ToList();
 
+            bool sePuedeComprar = true;
+            foreach(CarritoItem carrito in carritoItemsOfCustomer)
+            {
+                int productoRecorrido = carrito.ProductoId;
+                int cantidadProducto = carrito.Cantidad;
+                if (stockItemsEnSucursal.Find(si => si.ProductoId == productoRecorrido) != null && sePuedeComprar)
+                {
+                    int cantidadEnStock = stockItemsEnSucursal.Find(si => si.ProductoId == productoRecorrido).Cantidad;
+                    if (cantidadEnStock < cantidadProducto)
+                    {
+                        sePuedeComprar = false;
+                        return RedirectToAction("Index", "Carritos");
+                    }
+                }
+            }
 
-            return View();
+            return RedirectToAction("Index", "Home");
+            
         }
 
 

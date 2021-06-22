@@ -68,7 +68,7 @@ else if (User.IsInRole("Cliente"))
                 @if (User.IsInRole("Cliente"))
                 {
                     <td>
-                        <a asp-action="VerificarStock" asp-controller="Compras" asp-route-userName="@User.Identity.Name" asp-route-id="@item.Id">Seleccionar</a>
+                        <a asp-action="VerificarStock" asp-controller="Compras" asp-route-userName="@User.Identity.Name" asp-route-sucursalId="@item.Id">Seleccionar</a>
                     </td>
                 }
             </tr>
