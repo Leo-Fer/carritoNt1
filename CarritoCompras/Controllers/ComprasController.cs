@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarritoCompras.Controllers
 {
     public class ComprasController : Controller
     {
         private readonly MiContexto _context;
+        private readonly UserManager<Usuario> _userManager;
 
-        public ComprasController(MiContexto context)
+        public ComprasController(MiContexto context, UserManager<Usuario> usermanager)
         {
             _context = context;
+            _userManager = usermanager;
         }
 
         // GET: Compras
@@ -25,6 +28,30 @@ namespace CarritoCompras.Controllers
             var miContexto = _context.Compras.Include(c => c.Carrito).Include(c => c.Cliente);
             return View(await miContexto.ToListAsync());
         }
+
+        // GET PARA VERIFICAR STOCK
+        [HttpGet]
+        public async Task<IActionResult> VerificarStock(string userName, int sucursalId)
+        {
+            Usuario usr1 = await _userManager.FindByNameAsync(userName);
+            Carrito car1 = _context.Carritos.FirstOrDefault(c => c.ClienteId == usr1.Id && c.Activo);
+
+            var carritoitems = _context.CarritoItems.Where(s => s.CarritoId == car1.Id).ToList();
+
+            
+
+
+            return View();
+        }
+
+
+        public async Task<IActionResult> VerificarStock()
+        {
+
+            return View();
+        }
+
+
 
         // GET: Compras/Details/5
         public async Task<IActionResult> Details(int? id)

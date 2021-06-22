@@ -80,7 +80,7 @@
             <a asp-action="VaciarCarrito" asp-controller="CarritoItems" asp-route-userName="@User.Identity.Name"><i class="far fa-trash-alt"></i> Vaciar Carrito </a> |
             @if (total != 0)
             {
-                <a asp-action="FinalizarCompra" asp-controller="Compras"> Finalizar Compra</a>
+                <a asp-action="Index" asp-controller="Sucursales" asp-route-userName="@User.Identity.Name"> Finalizar Compra</a>
             }
 
         </div>
