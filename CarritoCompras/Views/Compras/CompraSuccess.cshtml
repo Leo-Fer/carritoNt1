@@ -34,6 +34,11 @@
         <div class="text-center mt-4">
             <i class="fas fa-check-circle successColor fs-80px"></i>
             <h3 class="mt-5">¡Que bueno! La compra ha sido completada con éxito.</h3>
+            <hr/>
+            <h4>Podes retirar en nuestra sucursal @ViewData["SucursalNombre"] de 8 a 19hs</h4>
+            <h5>(@ViewData["SucursalDireccion"])</h5>
+            <h4>O comunicarte por teléfono al @ViewData["SucursalTelefono"]</h4>
+            <h5>¡Gracias por elegirnos!</h5>
         </div>
         <div class="m100px-topImportant text-center">
             <a asp-action="Index" asp-controller="Categorias">Volver a las categorías</a>

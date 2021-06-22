@@ -53,7 +53,7 @@ namespace CarritoCompras.Controllers
                     if (cantidadEnStock < cantidadProducto)
                     {
                         sePuedeComprar = false;
-                        return RedirectToAction("CompraFail", "Compras");
+                        return RedirectToAction("CompraFail", "Compras", new { user = userName });
                     }
                 }
 
@@ -62,15 +62,11 @@ namespace CarritoCompras.Controllers
                 if (stockItemsEnSucursal.FirstOrDefault(si => si.ProductoId == productoRecorrido) == null)
                 {
                     sePuedeComprar = false;
-                    return RedirectToAction("CompraFail", "Compras");
+                    return RedirectToAction("CompraFail", "Compras", new { user = userName });
                 }
-
-
             }
 
             return await descontarStockEnSucursal(carritoItemsOfCustomer, stockItemsEnSucursal, usr1.Id, car1.Id);
-
-
         }
 
         public async Task<IActionResult> descontarStockEnSucursal(List<CarritoItem> carritoItemsComprados, List<StockItem> stockItemsEnSucursal, int usuarioId, int carritoId)
@@ -97,12 +93,12 @@ namespace CarritoCompras.Controllers
                 _context.CarritoItems.Remove(c);
                 _context.SaveChanges();
             }
-
-            return await CompraSuccess(usuarioId, carritoId, total);
+                        
+            return await CompraSuccess(usuarioId, carritoId, total, stockItemsEnSucursal[0].SucursalId);
         }
 
 
-        public async Task<IActionResult> CompraSuccess(int usuarioId, int carritoId, double total)
+        public async Task<IActionResult> CompraSuccess(int usuarioId, int carritoId, double total, int sucursalId)
         {
             Compra compraSuccess = new Compra();
             compraSuccess.ClienteId = usuarioId;
@@ -123,14 +119,62 @@ namespace CarritoCompras.Controllers
             carritoActivo.ClienteId = usuarioId;
             _context.Carritos.Add(carritoActivo);
             _context.SaveChanges();
-            
+
+            Sucursal suc = _context.Sucursales.FirstOrDefault(s => s.Id == sucursalId);
+            ViewData["SucursalDireccion"] = suc.Direccion;
+            ViewData["SucursalTelefono"] = suc.Telefono;
+            ViewData["SucursalNombre"] = suc.Nombre;
 
             return View("CompraSuccess");
         }
 
-        public async Task<IActionResult> CompraFail()
+        public async Task<IActionResult> CompraFail(string user)
         {
-            return View();
+            Usuario usr1 = await _userManager.FindByNameAsync(user);
+            Carrito car1 = _context.Carritos.FirstOrDefault(c => c.ClienteId == usr1.Id && c.Activo);
+            List<CarritoItem> carritoItemsOfCustomer = _context.CarritoItems.Where(c => c.CarritoId == car1.Id).ToList();
+            List<Sucursal> listaResultado = new List<Sucursal>();
+            int itemsValidados = 0;
+
+            bool finDeSucursales = false;
+            int i = 1;
+            while (!finDeSucursales)
+            {
+                Sucursal suc = _context.Sucursales.FirstOrDefault(s => s.Id == i);
+
+                if(suc != null)
+                {
+                    List<StockItem> stockItemsEnSucursal = _context.StockItems.Where(s => s.SucursalId == suc.Id).ToList();
+
+                    foreach (CarritoItem carrito in carritoItemsOfCustomer)
+                    {
+                        int productoId = carrito.ProductoId;
+                        int productoCantidad = carrito.Cantidad;
+                                                
+
+                        if ((stockItemsEnSucursal.FirstOrDefault(si => si.ProductoId == productoId) != null) 
+                            && (stockItemsEnSucursal.FirstOrDefault(si => si.ProductoId == productoId).Cantidad) >= productoCantidad)
+                        {
+                            itemsValidados++;
+                        }
+                    }
+
+                    if (itemsValidados == carritoItemsOfCustomer.Count)
+                    {
+                        listaResultado.Add(suc);
+                    }
+
+                    itemsValidados = 0;
+                } 
+                else
+                {
+                    finDeSucursales = true;
+                }
+
+                i++;
+            }
+
+            return View(listaResultado);
         }
 
 

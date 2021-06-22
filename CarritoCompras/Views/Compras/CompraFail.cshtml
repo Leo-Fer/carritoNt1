@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CarritoCompras.Models.CarritoItem>
+﻿@model IEnumerable<CarritoCompras.Models.Sucursal>
 
 @{
     ViewData["Title"] = "Index";
@@ -40,7 +40,26 @@
             <h3 class="mt-5">¡Que pena! La compra no se pudo realizar</h3>
         </div>
         <div>
-            <h4></h4>
+            @{if (Model.Count() != 0)
+                {
+                    <h2 class="mt-5">La sucursal que elegiste no cuenta con stock. Te pedimos elijas una de las siguientes: </h2>
+                    
+                        @foreach (var item in Model)
+                        {   <ul>
+                                <li> <a asp-action="VerificarStock" asp-route-userName="@User.Identity.Name" asp-route-sucursalId="@item.Id"><h4>@item.Nombre</h4></a></li>
+                            </ul>
+                         }
+            }
+            else
+            {
+            <h2 class="mt-5">Te pedimos disculpas por el momento no contamos con stock en ninguna sucursal.</h2>
+            }
+
+
+
+            }
+
+
         </div>
         <div class="m100px-topImportant text-center">
             <a asp-action="Index" asp-controller="Categorias">Volver a las categorías</a>
