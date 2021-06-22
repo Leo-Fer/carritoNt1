@@ -51,20 +51,42 @@ namespace CarritoCompras.Controllers
                     if (cantidadEnStock < cantidadProducto)
                     {
                         sePuedeComprar = false;
-                        return RedirectToAction("Index", "Carritos");
+                        return RedirectToAction("CompraFail", "Compras");
                     }
                 }
             }
 
-            return RedirectToAction("Index", "Home");
-            
+            return await descontarStockEnSucursal(carritoItemsOfCustomer, stockItemsEnSucursal) ;
+
+
+        }
+
+        public async Task<IActionResult> descontarStockEnSucursal(List<CarritoItem> carritoItemsComprados, List<StockItem> stockItemsEnSucursal)
+        {
+            //List<StockItem> stockItemsEnSucursal = _context.StockItems.Where(s => s.SucursalId == sucursalSeleccionada.Id).ToList();
+            foreach (CarritoItem c in carritoItemsComprados)
+            {
+                int IdDelProductoComprado = c.ProductoId;
+                int cantidadDelProducto = c.Cantidad;
+                StockItem stockDelProducto = stockItemsEnSucursal.FirstOrDefault(s => s.ProductoId == IdDelProductoComprado);
+                stockDelProducto.Cantidad = stockDelProducto.Cantidad - cantidadDelProducto;
+                _context.StockItems.Update(stockDelProducto);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("CompraSuccess", "Compras");
         }
 
 
-        public async Task<IActionResult> VerificarStock()
-        {
 
-            return View();
+        public async Task<IActionResult> CompraSuccess()
+        {
+            return View("CompraSuccess");
+        }
+
+        public async Task<IActionResult> CompraFail()
+        {
+            return View("CompraFail");
         }
 
 

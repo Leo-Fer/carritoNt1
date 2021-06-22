@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CarritoCompras.Models.CarritoItem>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        /*background: linear-gradient(180deg, #F7F7F7 70%, #FFFFFF 30%);*/
+        marginBottom: "180px";
+    }
+
+    .successColor {
+        color: #28a74585;
+    }
+
+    .m-0Important {
+        margin: 0px auto !important;
+    }
+
+    .m100px-topImportant {
+        margin-top: 100px !important;
+    }
+
+    .fs-80px {
+        font-size: 80px;
+    }
+
+    .fail-color {
+        color: #ff0000db;
+    }
+
+</style>
+
+<body>
+    <div class="col-8 m-0 m-0Important m100px-topImportant" style="height: 250px;">
+        <div class="text-center mt-4">
+            <i class="far fa-times-circle fail-color fs-80px"></i>
+            <h3 class="mt-5">¡Que pena! La compra no se pudo realizar</h3>
+        </div>
+        <div>
+            <h4></h4>
+        </div>
+        <div class="m100px-topImportant text-center">
+            <a asp-action="Index" asp-controller="Categorias">Volver a las categorías</a>
+        </div>
+    </div>
+</body>
