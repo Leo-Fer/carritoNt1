@@ -126,6 +126,7 @@ namespace CarritoCompras.Controllers
             ViewData["SucursalDireccion"] = suc.Direccion;
             ViewData["SucursalTelefono"] = suc.Telefono;
             ViewData["SucursalNombre"] = suc.Nombre;
+            ViewData["CompraId"] = compraSuccess.Id;
 
             return View("CompraSuccess");
         }
