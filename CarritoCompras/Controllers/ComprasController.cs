@@ -56,12 +56,12 @@ namespace CarritoCompras.Controllers
                 }
             }
 
-            return await descontarStockEnSucursal(carritoItemsOfCustomer, stockItemsEnSucursal) ;
+            return await descontarStockEnSucursal(carritoItemsOfCustomer, stockItemsEnSucursal, usr1.Id, car1.Id);
 
 
         }
 
-        public async Task<IActionResult> descontarStockEnSucursal(List<CarritoItem> carritoItemsComprados, List<StockItem> stockItemsEnSucursal)
+        public async Task<IActionResult> descontarStockEnSucursal(List<CarritoItem> carritoItemsComprados, List<StockItem> stockItemsEnSucursal, int usuarioId, int carritoId)
         {
             //List<StockItem> stockItemsEnSucursal = _context.StockItems.Where(s => s.SucursalId == sucursalSeleccionada.Id).ToList();
             foreach (CarritoItem c in carritoItemsComprados)
@@ -74,13 +74,18 @@ namespace CarritoCompras.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("CompraSuccess", "Compras");
+            return await CompraSuccess(usuarioId, carritoId);
         }
 
 
-
-        public async Task<IActionResult> CompraSuccess()
+        public async Task<IActionResult> CompraSuccess(int usuarioId, int carritoId)
         {
+            Compra compraSuccess = new Compra();
+            compraSuccess.ClienteId = usuarioId;
+            compraSuccess.CarritoId = carritoId;
+            compraSuccess.Total = 1000;
+            _context.Compras.Add(compraSuccess);
+            await _context.SaveChangesAsync();
             return View("CompraSuccess");
         }
 
