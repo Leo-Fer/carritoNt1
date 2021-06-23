@@ -55,7 +55,7 @@ namespace CarritoCompras.Controllers
         [Authorize(Roles ="Empleado")]
         public IActionResult Create()
         {
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Descripcion");
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre");
             return View();
         }
 
@@ -73,7 +73,7 @@ namespace CarritoCompras.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Descripcion", producto.CategoriaId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre", producto.CategoriaId);
             return View(producto);
         }
 
@@ -91,7 +91,7 @@ namespace CarritoCompras.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Descripcion", producto.CategoriaId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre", producto.CategoriaId);
             return View(producto);
         }
 
@@ -128,7 +128,7 @@ namespace CarritoCompras.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Descripcion", producto.CategoriaId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre", producto.CategoriaId);
             return View(producto);
         }
 
