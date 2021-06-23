@@ -51,7 +51,7 @@
         <a asp-action="Create" asp-controller="CarritoItems" asp-route-prodId="@Model.Id" asp-route-user="@User.Identity.Name">Agregar a carrito |</a>
 
     }
-    @if (User.IsInRole("Cliente"))
+    @if (User.IsInRole("Cliente") || !User.Identity.IsAuthenticated)
     {
         <a asp-action="MostrarProductosPorCategoria" asp-controller="Productos" asp-route-id="@Model.CategoriaId">Volver</a>
     }
