@@ -114,7 +114,14 @@ namespace CarritoCompras.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
+                    var usr1 = _context.Usuarios.FirstOrDefault(u => u.Id == usuario.Id);
+                                       
+                    usr1.Nombre = usuario.Nombre;
+                    usr1.Apellido = usuario.Apellido;
+                    usr1.Direccion = usuario.Direccion;
+                    usr1.Telefono = usuario.Telefono;
+
+                    _context.Update(usr1);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
