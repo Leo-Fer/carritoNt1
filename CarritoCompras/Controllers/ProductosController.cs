@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarritoCompras.Controllers
 {
@@ -25,7 +26,12 @@ namespace CarritoCompras.Controllers
             var miContexto = _context.Productos.Include(p => p.Categoria);
             return View(await miContexto.ToListAsync());
         }
+        public async Task<IActionResult> MostrarProductosPorCategoria(int? id)
+        {
+            var miContexto = _context.Productos.Where(p => p.CategoriaId == id);
 
+            return View(await miContexto.ToListAsync());
+        }
         // GET: Productos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -45,7 +51,8 @@ namespace CarritoCompras.Controllers
             return View(producto);
         }
 
-        // GET: Productos/Create
+        // GET: Productos/
+        [Authorize(Roles ="Empleado")]
         public IActionResult Create()
         {
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre");
@@ -55,6 +62,7 @@ namespace CarritoCompras.Controllers
         // POST: Productos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Empleado")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,PrecioVigente,Activo,CategoriaId")] Producto producto)
@@ -70,6 +78,7 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Productos/Edit/5
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +100,7 @@ namespace CarritoCompras.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion,PrecioVigente,Activo,CategoriaId")] Producto producto)
         {
             if (id != producto.Id)
@@ -120,36 +130,6 @@ namespace CarritoCompras.Controllers
             }
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre", producto.CategoriaId);
             return View(producto);
-        }
-
-        // GET: Productos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var producto = await _context.Productos
-                .Include(p => p.Categoria)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
-
-            return View(producto);
-        }
-
-        // POST: Productos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var producto = await _context.Productos.FindAsync(id);
-            producto.Activo = false;
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool ProductoExists(int id)

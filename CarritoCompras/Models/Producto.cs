@@ -16,13 +16,14 @@ namespace CarritoCompras.Models {
         [Required(ErrorMessage = ErrorMsgs.ErrorRequerido)]
         [DataType(DataType.Currency)]
         [Range(0.01, double.MaxValue, ErrorMessage = ErrorMsgs.ErrorMenorACero)]
-        [Display(Name ="Precio vigente")]
+        [Display(Name ="Precio unitario")]
         public double PrecioVigente { get; set; }
 
         public bool Activo { get; set; } = true;
         
         public Categoria Categoria { get; set; }
         [Display(Name ="Categoria")]
+        [Required]
         public int CategoriaId { get; set; }
         
         public List<StockItem> Stockitems { get; set; }

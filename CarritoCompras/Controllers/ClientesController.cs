@@ -6,17 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
+using Microsoft.AspNetCore.Identity;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarritoCompras.Controllers
 {
     public class ClientesController : Controller
     {
         private readonly MiContexto _context;
+        private readonly UserManager<Usuario> _userManager;
+        private readonly RoleManager<Rol> _rolmanager;
 
-        public ClientesController(MiContexto context)
+        public ClientesController(
+            MiContexto context, 
+            UserManager<Usuario> usermanager, 
+            RoleManager<Rol> rolmanager)
         {
             _context = context;
+            _userManager = usermanager;
+            _rolmanager = rolmanager;
         }
 
         // GET: Clientes
@@ -44,8 +53,14 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Clientes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
+            Cliente cliente;
+            if (id != null)
+            {
+                cliente = await _context.Clientes.FindAsync(id);
+                return View("Create", cliente);
+            }
             return View();
         }
 
@@ -54,17 +69,135 @@ namespace CarritoCompras.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Dni,Id,Nombre,Apellido,Direccion,Telefono,Email,FechaAlta,Password,UserRol")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("Dni,Id,Nombre,Apellido,Direccion,Telefono,Email,Password")] Cliente cliente)
         {
-            cliente.carrito = new Carrito();
-            cliente.UserRol = "cliente";
+            if (ModelState.IsValid)
+            {
+                //Por si el Administrador quiere agregar cliente
+                if (cliente.Email == null)
+                {
+                    ModelState.AddModelError("Email", $"El {nameof(cliente.Email)} es requerido.");
+                    return View(cliente);
+                }
+                
+                IdentityResult resu = await CreoCliente(cliente);
+
+
+                return RedirectToAction("index", "Home");
+            }
+            return View(cliente);
+        }
+
+        private async Task<IdentityResult> CreoCliente(Cliente cliente)
+        {
+            IdentityResult resultado = new IdentityResult();
+
+            if (cliente.Id == 0)//creación interna
+            {
+                cliente.UserName = cliente.Email;
+                resultado = await _userManager.CreateAsync(cliente, cliente.PasswordHash);
+            }
+            else if (cliente.Id != 0) //creación con registración previa
+            {
+
+                Cliente clt = _context.Clientes.Find(cliente.Id);
+                if (clt != null)
+                {
+                    clt.Nombre = cliente.Nombre;
+                    clt.Apellido = cliente.Apellido;
+                    clt.Email = cliente.Email;
+                    clt.Dni = cliente.Dni;
+                    clt.Direccion = cliente.Direccion;
+                    clt.FechaAlta = DateTime.Now;
+                    clt.Telefono = cliente.Telefono;
+                    resultado = await _userManager.UpdateAsync(clt);
+
+                    Carrito carrito = new Carrito();
+                    carrito.Activo = true;
+                    carrito.ClienteId = cliente.Id;
+
+                    var exito = _context.Carritos.Add(carrito);
+                    _context.SaveChanges();
+                }
+
+            }
+
+            return resultado;
+        }
+
+
+        // GET: Clientes/Edit/5
+        public async Task<IActionResult> EditarDatosContacto(string userName)
+        {
+            if (userName == null)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _userManager.FindByNameAsync(userName);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["userMail"] = cliente.Email;
+            return View(cliente);
+        }
+
+        // POST: Clientes/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarDatosContacto(int id, [Bind("Dni,Id,Nombre,Apellido,Direccion,Telefono,Email,FechaAlta,Password,UserRol")] Cliente cliente)
+        {
+            if (id != cliente.Id)
+            {
+                return NotFound();
+            }
+
+            Usuario cli = await _userManager.FindByNameAsync(cliente.Email);
+            cli.Direccion = cliente.Direccion;
+            cli.Telefono = cliente.Telefono;
 
             if (ModelState.IsValid)
             {
-                _context.Add(cliente);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                
+                try
+                {
+                    await _userManager.UpdateAsync(cli);                    
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ClienteExists(cliente.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index", "Home");
             }
+            return View(cliente);
+        }
+
+        // GET: Clientes/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
             return View(cliente);
         }
 
@@ -76,7 +209,9 @@ namespace CarritoCompras.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = _context.Clientes.FirstOrDefault(c => c.Id == id);
+            
+
             if (cliente == null)
             {
                 return NotFound();
@@ -100,8 +235,16 @@ namespace CarritoCompras.Controllers
             {
                 try
                 {
-                    _context.Update(cliente);
-                    await _context.SaveChangesAsync();
+                    var cli = _context.Clientes.FirstOrDefault(c => c.Id == cliente.Id);
+                    
+                    cli.Dni = cliente.Dni;
+                    cli.Nombre = cliente.Nombre;
+                    cli.Apellido = cliente.Apellido;
+                    cli.Direccion = cliente.Direccion;
+                    cli.Telefono = cliente.Telefono;
+                                                            
+                    _context.Clientes.Update(cli);
+                    _context.SaveChanges();                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,24 +259,6 @@ namespace CarritoCompras.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
-        }
-
-        // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-
             return View(cliente);
         }
 
@@ -153,4 +278,6 @@ namespace CarritoCompras.Controllers
             return _context.Clientes.Any(e => e.Id == id);
         }
     }
+
+    
 }

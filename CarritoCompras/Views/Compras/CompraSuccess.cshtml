@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CarritoCompras.Models.CarritoItem>
+
+@{
+    ViewData["Title"] = "CompraExitosa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        /*background: linear-gradient(180deg, #F7F7F7 70%, #FFFFFF 30%);*/
+        marginBottom:"180px";
+    }
+
+    .successColor {
+        color: #28a74585;
+    }
+
+    .m-0Important{
+        margin: 0px auto!important;
+    }
+
+    .m100px-topImportant {
+        margin-top: 100px!important;
+    }
+
+    .fs-80px{
+        font-size: 80px;
+    }
+
+</style>
+
+<body>
+    <div class="col-8 m-0 m-0Important m100px-topImportant" style="height: 250px;">
+        <div class="text-center mt-4">
+            <i class="fas fa-check-circle successColor fs-80px"></i>
+            <h3 class="mt-5">¡Que bueno! La compra ha sido completada con éxito.</h3>
+            <hr/>
+            <h4>Podes retirar en nuestra sucursal @ViewData["SucursalNombre"] de 8 a 19hs</h4>
+            <h5>(@ViewData["SucursalDireccion"])</h5>
+            <h4>O comunicarte por teléfono al @ViewData["SucursalTelefono"]</h4>
+            <h3>Tu numero de compra es #@ViewData["CompraId"]</h3>
+            <h5>¡Gracias por elegirnos!</h5>
+        </div>
+        <div class="m100px-topImportant text-center">
+            <a asp-action="Index" asp-controller="Categorias">Volver a las categorías</a>
+        </div>
+    </div>
+</body>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarritoCompras.Data;
 using CarritoCompras.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarritoCompras.Controllers
 {
@@ -47,10 +48,19 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: StockItems/Create
-        public IActionResult Create()
+        [Authorize(Roles="Empleado")]
+        public async Task<IActionResult> Create(int Id)
         {
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion");
-            ViewData["SucursalId"] = new SelectList(_context.Sucursales, "Id", "Direccion");
+            ViewData["SucursalId"] = new SelectList(_context.Sucursales, "Id", "Nombre");
+            if (Id != null)
+            {
+                StockItem stockItem = new StockItem();
+                //Producto producto = _context.Productos.FirstOrDefault(p => p.Id == Id);
+                //stockItem.ProductoId = Id;
+                ViewData["ProductoId"] = Id;
+                return View("Create");
+            }
+
             return View();
         }
 
@@ -61,32 +71,44 @@ namespace CarritoCompras.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Cantidad,SucursalId,ProductoId")] StockItem stockItem)
         {
+           
             if (ModelState.IsValid)
             {
-                _context.Add(stockItem);
-                await _context.SaveChangesAsync();
+                StockItem existeStk = _context.StockItems.AsNoTracking().FirstOrDefault(s => s.ProductoId == stockItem.ProductoId && s.SucursalId == stockItem.SucursalId);
+                if(existeStk != null)
+                {
+
+                    int cantidadEnStock = existeStk.Cantidad;
+                    stockItem.Cantidad += cantidadEnStock;
+                    _context.Update(stockItem);
+                    await _context.SaveChangesAsync();
+                }
+                else 
+                { 
+                    _context.Add(stockItem);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion", stockItem.ProductoId);
             ViewData["SucursalId"] = new SelectList(_context.Sucursales, "Id", "Direccion", stockItem.SucursalId);
             return View(stockItem);
         }
 
         // GET: StockItems/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int productoId, int sucursalID)
         {
-            if (id == null)
+            if (productoId == 0 || sucursalID == 0)
             {
                 return NotFound();
             }
 
-            var stockItem = await _context.StockItems.FindAsync(id);
+            var stockItem = _context.StockItems.FirstOrDefault(s => s.ProductoId == productoId && s.SucursalId == sucursalID);
             if (stockItem == null)
             {
                 return NotFound();
             }
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Descripcion", stockItem.ProductoId);
-            ViewData["SucursalId"] = new SelectList(_context.Sucursales, "Id", "Direccion", stockItem.SucursalId);
+            ViewData["ProductoId"] = stockItem.ProductoId;
+            ViewData["SucursalId"] = stockItem.SucursalId;
             return View(stockItem);
         }
 
@@ -95,13 +117,8 @@ namespace CarritoCompras.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Cantidad,SucursalId,ProductoId")] StockItem stockItem)
-        {
-            if (id != stockItem.SucursalId)
-            {
-                return NotFound();
-            }
-
+        public async Task<IActionResult> Edit([Bind("Cantidad,SucursalId,ProductoId")] StockItem stockItem)
+        {            
             if (ModelState.IsValid)
             {
                 try

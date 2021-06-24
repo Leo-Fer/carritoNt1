@@ -1,0 +1,63 @@
+﻿@model IEnumerable<CarritoCompras.Models.Producto>
+@inject SignInManager<Usuario> signInManager
+
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Productos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioVigente)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecioVigente)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                    @if (!signInManager.IsSignedIn(User))
+                    {
+
+                        <a asp-action="IniciarSesion" asp-controller="Accounts">Agregar a carrito</a>
+
+                    }
+                    else if (item.Activo)
+                    {
+                        <a asp-action="Create" asp-controller="CarritoItems" asp-route-prodId="@item.Id" asp-route-user="@User.Identity.Name">Agregar a carrito</a>
+                    }
+                    else
+                    {
+                        <a href="" style="color:black">Producto pausado</a>
+                    }
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Index" asp-controller="Categorias">Volver</a>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

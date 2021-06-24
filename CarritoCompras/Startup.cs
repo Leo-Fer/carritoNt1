@@ -1,7 +1,9 @@
 using CarritoCompras.Data;
+using CarritoCompras.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +37,19 @@ namespace CarritoCompras
             }        
             
             services.AddControllersWithViews();
+
+            services.AddIdentity<Usuario, Rol>().AddEntityFrameworkStores<MiContexto>();
+
+            services.Configure<IdentityOptions>(
+                opciones =>
+                {
+                    opciones.Password.RequireNonAlphanumeric = false;
+                    opciones.Password.RequiredLength = 8;
+                }
+                );
+            #region Dbinitilize
+            services.AddScoped<IDbInicializador, DbInicializador>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,8 +68,27 @@ namespace CarritoCompras
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                //DbContext
+                var contexto = serviceScope.ServiceProvider.GetRequiredService<MiContexto>();
+
+                if (Configuration.GetValue<bool>("UsaMemoria"))
+                {
+                    contexto.Database.EnsureCreated();
+                }
+                else
+                {
+                    contexto.Database.Migrate();
+                }
+
+                //DbInicializador
+                serviceScope.ServiceProvider.GetService<IDbInicializador>().Seed();
+            }
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

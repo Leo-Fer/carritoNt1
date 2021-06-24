@@ -1,0 +1,100 @@
+﻿@model IEnumerable<CarritoCompras.Models.CarritoItem>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    double total = 0;
+    foreach (var item in Model)
+    {
+
+        total = total + (item.Cantidad * item.Producto.PrecioVigente);
+    }
+
+}
+
+<div class="col-8">
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cantidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto.PrecioVigente)
+            </th>
+            <th>
+                Parciales
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            double precioParcial = item.Cantidad * item.Producto.PrecioVigente;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.PrecioVigente)
+                </td>
+                <td>
+                    @precioParcial.ToString("C")
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="col-11 mt-5">
+    @if (total == 0)
+    {
+        <div class="text-center">No hay productos agregados en el carrito actualmente.</div>
+    }
+    else
+    {        
+        <div class="font-weight-bold text-right" style="font-size: 16px;">Subtotal: @total.ToString("C")</div>
+        <div class="mt-4 text-right">
+            <a asp-action="VaciarCarrito" asp-controller="CarritoItems" asp-route-userName="@User.Identity.Name"><i class="far fa-trash-alt"></i> Vaciar Carrito </a> |
+            @if (total != 0)
+            {
+                <a asp-action="Index" asp-controller="Sucursales" asp-route-userName="@User.Identity.Name"> Finalizar Compra</a>
+            }
+
+        </div>
+    }
+</div>
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

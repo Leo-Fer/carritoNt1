@@ -12,13 +12,9 @@ namespace CarritoCompras.Models
         [Display(Name="DNI")]
         public string Dni { get; set; }
 
-        public List<Carrito> Carritos;
+        public List<Carrito> Carritos { get; set; }
 
-        public List<Compra> Compras;
-
-        public Carrito carrito { get; set; }
-
-
+        public List<Compra> Compras { get; set; }
 
     }
 }
