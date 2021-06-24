@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Usuarios</h1>
+<h1>Empleados</h1>
 
 <table class="table">
     <thead>
@@ -30,6 +30,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+    if (item.GetType() != typeof(Cliente)) //NO MUESTRA A LOS CLIENTES, SOLO A LOS EMPLEADOS
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
@@ -52,6 +54,7 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Borrar</a>
             </td>
         </tr>
+    }
 }
     </tbody>
 </table>

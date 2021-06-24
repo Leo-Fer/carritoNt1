@@ -209,8 +209,9 @@ namespace CarritoCompras.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cliente = _context.Clientes.FirstOrDefault(c => c.Id == id);
+            
+
             if (cliente == null)
             {
                 return NotFound();
@@ -234,8 +235,16 @@ namespace CarritoCompras.Controllers
             {
                 try
                 {
-                    _context.Update(cliente);
-                    await _context.SaveChangesAsync();
+                    var cli = _context.Clientes.FirstOrDefault(c => c.Id == cliente.Id);
+                    
+                    cli.Dni = cliente.Dni;
+                    cli.Nombre = cliente.Nombre;
+                    cli.Apellido = cliente.Apellido;
+                    cli.Direccion = cliente.Direccion;
+                    cli.Telefono = cliente.Telefono;
+                                                            
+                    _context.Clientes.Update(cli);
+                    _context.SaveChanges();                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
