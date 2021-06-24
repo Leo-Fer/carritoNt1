@@ -108,12 +108,9 @@ namespace CarritoCompras.Controllers
             {
                 try
                 {
-                    var exists = _context.Categorias.FirstOrDefault(acc => acc.Nombre == categoria.Nombre);
-                    if (exists == null)
-                    {
-                        _context.Add(categoria);
-                        await _context.SaveChangesAsync();
-                    }
+                    _context.Update(categoria);
+                    await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
