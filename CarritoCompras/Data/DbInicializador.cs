@@ -29,6 +29,7 @@ namespace CarritoCompras.Data
             {
                 IniciarRoles();
                 CrearAdmin();
+                CrearEmpleado();
                 CrearRegistrosParaPruebas();
             }
 
@@ -55,7 +56,7 @@ namespace CarritoCompras.Data
                 usuario.Nombre = "Adminio";
                 usuario.Apellido = "Iglesias";
 
-                var resultadoDeUser = _userManager.CreateAsync(usuario, "Adminpass1!").Result;
+                var resultadoDeUser = _userManager.CreateAsync(usuario, "Password1!").Result;
 
                 if (resultadoDeUser.Succeeded)
                 {
@@ -65,8 +66,32 @@ namespace CarritoCompras.Data
             }
         }
 
-        //LOS PRODUCTOS NO PUEDEN BORRARSE, POR LO TANTO SI NO EXISTE EL ID 1, NO HAY NADA CARGADO
-        private async void CrearRegistrosParaPruebas()
+        private async void CrearEmpleado()
+        {
+            if (_userManager.FindByEmailAsync("Empleado@empleado.com").Result == null)
+            {
+                Usuario usuario = new Usuario();
+
+                usuario.UserName = "empleado@empleado.com";
+                usuario.Email = usuario.UserName;
+                usuario.Nombre = "Carlos";
+                usuario.Apellido = "Laburetti";
+                usuario.Telefono = "4502-0974";
+                usuario.Direccion = "Av. Del Trabajo 9001";
+
+                var resultadoDeUser = _userManager.CreateAsync(usuario, "Password1!").Result;
+                
+                if (resultadoDeUser.Succeeded)
+                {                    
+                    var exito = _userManager.AddToRoleAsync(usuario, "Empleado").Result;
+                }
+            }
+
+
+        }
+
+            //LOS PRODUCTOS NO PUEDEN BORRARSE, POR LO TANTO SI NO EXISTE EL ID 1, NO HAY NADA CARGADO
+            private async void CrearRegistrosParaPruebas()
         {
             if(_miContexto.Productos.FirstOrDefault(p => p.Id == 1) == null)
             {
@@ -91,12 +116,12 @@ namespace CarritoCompras.Data
                 Producto joggin = new Producto() { Nombre = "Adidas GymForce", Activo = false, Descripcion = "Gimnasia. Color gris. Lavar a mano.", PrecioVigente = 3000 };
                 joggin.CategoriaId = pantalones.Id;
 
-                Producto shorts = new Producto() { Nombre = "Nike Futbol", Activo = true, Descripcion = "Cortos para futbol. ClimaCool", PrecioVigente = 3000 };
-                shorts.CategoriaId = pantalones.Id;
+                Producto shortsNike = new Producto() { Nombre = "Nike Futbol", Activo = true, Descripcion = "Cortos para futbol. ClimaCool", PrecioVigente = 3000 };
+                shortsNike.CategoriaId = pantalones.Id;
 
                 _miContexto.Productos.Add(vaquero);
                 _miContexto.Productos.Add(joggin);
-                _miContexto.Productos.Add(shorts);
+                _miContexto.Productos.Add(shortsNike);
                 _miContexto.SaveChanges();     
                 
                 //      ALTA SOMBREROS
@@ -113,8 +138,8 @@ namespace CarritoCompras.Data
 
                 //      ALTA ZAPATILLAS
 
-                Producto nikes = new Producto() { Nombre = "Nike 1301", Activo = true, Descripcion = "Mismas prestaciones que las 1300.", PrecioVigente = 7000 };
-                nikes.CategoriaId = zapatillas.Id;
+                Producto nikesZapa = new Producto() { Nombre = "Nike 1301", Activo = true, Descripcion = "Mismas prestaciones que las 1300.", PrecioVigente = 7000 };
+                nikesZapa.CategoriaId = zapatillas.Id;
 
                 Producto crocs = new Producto() { Nombre = "CROCS", Activo = true, Descripcion = "Suela de goma. 43 agujeritos", PrecioVigente = 6500 };
                 crocs.CategoriaId = zapatillas.Id;
@@ -122,7 +147,7 @@ namespace CarritoCompras.Data
                 Producto converse = new Producto() { Nombre = "Converse CamAir", Activo = true, Descripcion = "Con cámara de aire", PrecioVigente = 9000 };
                 converse.CategoriaId = zapatillas.Id;
 
-                _miContexto.Productos.Add(nikes);
+                _miContexto.Productos.Add(nikesZapa);
                 _miContexto.Productos.Add(crocs);
                 _miContexto.Productos.Add(converse);
                 _miContexto.SaveChanges();
@@ -143,10 +168,10 @@ namespace CarritoCompras.Data
                 StockItem vaqueroAbasto = new StockItem() { Cantidad = 30, ProductoId = vaquero.Id, SucursalId = abasto.Id };     
                 StockItem jogginAbasto = new StockItem() { Cantidad = 50, ProductoId = joggin.Id, SucursalId = abasto.Id };
                 StockItem gorraAbasto = new StockItem() { Cantidad = 100, ProductoId = gorra.Id, SucursalId = abasto.Id };
-                StockItem nikesAbasto = new StockItem() { Cantidad = 90, ProductoId = nikes.Id, SucursalId = abasto.Id };
+                StockItem nikesAbasto = new StockItem() { Cantidad = 90, ProductoId = nikesZapa.Id, SucursalId = abasto.Id };
 
                 StockItem jogginUrquiza = new StockItem() { Cantidad = 30, ProductoId = joggin.Id, SucursalId = urquiza.Id };
-                StockItem shortsUrquiza = new StockItem() { Cantidad = 40, ProductoId = shorts.Id, SucursalId = urquiza.Id };
+                StockItem shortsUrquiza = new StockItem() { Cantidad = 40, ProductoId = shortsNike.Id, SucursalId = urquiza.Id };
                 StockItem bombinUrquiza = new StockItem() { Cantidad = 200, ProductoId = bombin.Id, SucursalId = urquiza.Id };
 
                 StockItem vaqueroDevoto = new StockItem() { Cantidad = 35, ProductoId = vaquero.Id, SucursalId = devoto.Id };
@@ -156,6 +181,7 @@ namespace CarritoCompras.Data
                 _miContexto.StockItems.Add(vaqueroAbasto);
                 _miContexto.StockItems.Add(jogginAbasto);
                 _miContexto.StockItems.Add(gorraAbasto);
+                _miContexto.StockItems.Add(nikesAbasto);
                 _miContexto.StockItems.Add(jogginUrquiza);
                 _miContexto.StockItems.Add(shortsUrquiza);
                 _miContexto.StockItems.Add(bombinUrquiza);
