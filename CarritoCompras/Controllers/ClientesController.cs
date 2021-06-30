@@ -73,7 +73,7 @@ namespace CarritoCompras.Controllers
         {
             if (ModelState.IsValid)
             {
-                //Por si el Administrador quiere agregar cliente
+                
                 if (cliente.Email == null)
                 {
                     ModelState.AddModelError("Email", $"El {nameof(cliente.Email)} es requerido.");
@@ -91,13 +91,8 @@ namespace CarritoCompras.Controllers
         private async Task<IdentityResult> CreoCliente(Cliente cliente)
         {
             IdentityResult resultado = new IdentityResult();
-
-            if (cliente.Id == 0)//creación interna
-            {
-                cliente.UserName = cliente.Email;
-                resultado = await _userManager.CreateAsync(cliente, cliente.PasswordHash);
-            }
-            else if (cliente.Id != 0) //creación con registración previa
+                        
+            if (cliente.Id != 0) //creación con registración previa, no hay registracion interna segun consigna
             {
 
                 Cliente clt = _context.Clientes.Find(cliente.Id);
@@ -158,7 +153,7 @@ namespace CarritoCompras.Controllers
 
             Usuario cli = await _userManager.FindByNameAsync(cliente.Email);
             cli.Direccion = cliente.Direccion;
-            cli.Telefono = cliente.Telefono;
+            cli.Telefono = cliente.Telefono;            
 
             if (ModelState.IsValid)
             {

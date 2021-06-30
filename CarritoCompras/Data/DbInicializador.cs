@@ -29,7 +29,7 @@ namespace CarritoCompras.Data
             {
                 IniciarRoles();
                 CrearAdmin();
-                CrearEmpleado();
+                CrearEmpleado();                
                 CrearRegistrosParaPruebas();
             }
 
@@ -46,12 +46,12 @@ namespace CarritoCompras.Data
 
         private async void CrearAdmin()
         {
-            if (_userManager.FindByEmailAsync("Admin@admin.com").Result == null)
+            if (_userManager.FindByEmailAsync("admin@admin.com").Result == null)
             {
                 Usuario usuario = new Usuario();
 
 
-                usuario.UserName = "Admin@admin.com";
+                usuario.UserName = "admin@admin.com";
                 usuario.Email = usuario.UserName;
                 usuario.Nombre = "Adminio";
                 usuario.Apellido = "Iglesias";
@@ -66,9 +66,10 @@ namespace CarritoCompras.Data
             }
         }
 
+
         private async void CrearEmpleado()
         {
-            if (_userManager.FindByEmailAsync("Empleado@empleado.com").Result == null)
+            if (_userManager.FindByEmailAsync("empleado@empleado.com").Result == null)
             {
                 Usuario usuario = new Usuario();
 
@@ -77,7 +78,7 @@ namespace CarritoCompras.Data
                 usuario.Nombre = "Carlos";
                 usuario.Apellido = "Laburetti";
                 usuario.Telefono = "4502-0974";
-                usuario.Direccion = "Av. Del Trabajo 9001";
+                usuario.Direccion = "Av. Del Trabajo 9001, CABA";
 
                 var resultadoDeUser = _userManager.CreateAsync(usuario, "Password1!").Result;
                 
@@ -86,12 +87,10 @@ namespace CarritoCompras.Data
                     var exito = _userManager.AddToRoleAsync(usuario, "Empleado").Result;
                 }
             }
-
-
         }
 
             //LOS PRODUCTOS NO PUEDEN BORRARSE, POR LO TANTO SI NO EXISTE EL ID 1, NO HAY NADA CARGADO
-            private async void CrearRegistrosParaPruebas()
+        private async void CrearRegistrosParaPruebas()
         {
             if(_miContexto.Productos.FirstOrDefault(p => p.Id == 1) == null)
             {
@@ -104,8 +103,7 @@ namespace CarritoCompras.Data
 
                 _miContexto.Categorias.Add(sombreros);
                 _miContexto.Categorias.Add(pantalones);
-                _miContexto.Categorias.Add(zapatillas);
-                
+                _miContexto.Categorias.Add(zapatillas);                
                 _miContexto.SaveChanges();
 
                 //      ALTA PANTALONES
@@ -154,9 +152,9 @@ namespace CarritoCompras.Data
 
                 //      ALTA SUCURSALES
 
-                Sucursal devoto = new Sucursal() { Direccion = "Av. Beiro 1534", Email = "devoto@sucursal.com", Nombre = "Devoto", Telefono = "4566-9713" };
-                Sucursal abasto = new Sucursal() { Direccion = "Av. Corrientes 9301", Email = "abasto@sucursal.com", Nombre = "Abasto", Telefono = "4382-1533" };
-                Sucursal urquiza = new Sucursal() { Direccion = "Roosevelt 2952", Email = "urquiza@sucursal.com", Nombre = "Villa Urquiza", Telefono = "4523-4832" };
+                Sucursal devoto = new Sucursal() { Direccion = "Av. Beiro 1534, CABA", Email = "devoto@sucursal.com", Nombre = "Devoto", Telefono = "4566-9713" };
+                Sucursal abasto = new Sucursal() { Direccion = "Av. Corrientes 9301, CABA", Email = "abasto@sucursal.com", Nombre = "Abasto", Telefono = "4382-1533" };
+                Sucursal urquiza = new Sucursal() { Direccion = "Roosevelt 2952, CABA", Email = "urquiza@sucursal.com", Nombre = "Villa Urquiza", Telefono = "4523-4832" };
 
                 _miContexto.Sucursales.Add(devoto);
                 _miContexto.Sucursales.Add(abasto);
@@ -190,7 +188,37 @@ namespace CarritoCompras.Data
                 _miContexto.StockItems.Add(converseDevoto);
                 _miContexto.SaveChanges();
 
+
+                Usuario usr1 = new Cliente() { Email = "cliente@cliente.com", UserName = "cliente@cliente.com" };
+
+                var resultadoCliente = _userManager.CreateAsync(usr1, "Password1!").Result;
+                
+                if(resultadoCliente.Succeeded)
+                {
+                    var exito = _userManager.AddToRoleAsync(usr1, "Cliente").Result;
+                }
+
+                Cliente cli = _miContexto.Clientes.Find(usr1.Id);
+
+                if (cli != null)
+                {
+                    cli.Nombre = "Arturo";
+                    cli.Apellido = "Clientolini";
+                    cli.Telefono = "4799-0312";
+                    cli.Direccion = "Nazca 2784, CABA";
+                    cli.Dni = "27901233";
+
+                    Carrito carrito = new Carrito() { Activo = true, ClienteId = cli.Id };
+
+                    _miContexto.Carritos.Add(carrito);
+                    _miContexto.Update(cli);
+                    _miContexto.SaveChanges();
+
+                }                               
+
             }
+
+            
 
         }
 
