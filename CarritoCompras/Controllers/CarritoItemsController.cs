@@ -63,7 +63,7 @@ namespace CarritoCompras.Controllers
         // GET: CarritoItems/Create
         public async Task<IActionResult> Create(int prodId, string user)
         {
-            if (prodId != 0)
+            if (prodId != 0 && _context.Productos.FirstOrDefault(p => p.Id == prodId).Activo)
             {
                 CarritoItem carritoItem = new CarritoItem();
                 carritoItem.ProductoId = prodId;
@@ -83,7 +83,8 @@ namespace CarritoCompras.Controllers
 
                 return View("Create", carritoItem);
             }
-            return View();
+
+            return RedirectToAction("MostrarProductosPorCategoria", "Productos", new { id = _context.Productos.FirstOrDefault(p => p.Id == prodId).CategoriaId });
         }
 
         // POST: CarritoItems/Create

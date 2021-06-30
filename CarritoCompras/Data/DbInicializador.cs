@@ -188,6 +188,7 @@ namespace CarritoCompras.Data
                 _miContexto.StockItems.Add(converseDevoto);
                 _miContexto.SaveChanges();
 
+                //  CREO EL CLIENTE
 
                 Usuario usr1 = new Cliente() { Email = "cliente@cliente.com", UserName = "cliente@cliente.com" };
 
