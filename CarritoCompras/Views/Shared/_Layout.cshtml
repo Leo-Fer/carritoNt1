@@ -44,7 +44,7 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="StockItems" asp-action="Index">Stocks</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Compras" asp-action="Index">Listar Compras</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Compras" asp-action="Index" asp-route-userName="">Listar Compras</a>
                                 </li>
                             }
                         }
@@ -69,7 +69,7 @@
                                 </li>
                             }
                             if (User.Identity.IsAuthenticated && !User.IsInRole("Cliente"))
-                            {
+                            {                               
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="CerrarSesion">Salir</a>
                                 </li>
@@ -86,7 +86,9 @@
                                     </button>
                                     <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                                         <a class="nav-link text-dark" asp-action="EditarDatosContacto" asp-controller="Clientes" asp-route-userName="@User.Identity.Name">Editar datos</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Compras" asp-action="Index" asp-route-userName="@User.Identity.Name">Historial Compras</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="CerrarSesion">Cerrar sesión</a>
+
                                     </div>
                                 </div>
                             }

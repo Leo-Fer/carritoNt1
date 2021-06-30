@@ -23,11 +23,23 @@ namespace CarritoCompras.Controllers
         }
 
         // GET: Compras
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName)
         {
-            var miContexto = _context.Compras.Include(c => c.Carrito).Include(c => c.Cliente).OrderByDescending(c => c.Total).Where(c => c.fecha.Month == DateTime.Now.Month);
+
+            if (userName == null)
+            {
+                var miContexto = _context.Compras.Include(c => c.Carrito).Include(c => c.Cliente).OrderByDescending(c => c.Total).Where(c => c.fecha.Month == DateTime.Now.Month);
+
+                return View(await miContexto.ToListAsync());
+            }  else
+            {
+                var userId = _context.Clientes.FirstOrDefault(c => c.Email == userName).Id;
+
+                var miContexto2 = _context.Compras.Include(c => c.Cliente).Where(c => c.ClienteId == userId);
+
+                return View(await miContexto2.ToListAsync());
+            }                       
             
-            return View(await miContexto.ToListAsync());
         }
 
         // GET PARA VERIFICAR STOCK
